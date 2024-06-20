@@ -1,0 +1,12 @@
+{
+    "name": "pocker-monorepo",
+    "version": "1.0.0",
+    "description": "扑克游戏",
+    "main": "index.js",
+    "scripts": {
+        "start:pocker": "pnpm --filter pocker-admin dev"
+    },
+    "keywords": [],
+    "author": "zjf",
+    "license": "ISC"
+}
