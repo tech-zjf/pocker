@@ -4,9 +4,21 @@
     "description": "扑克游戏",
     "main": "index.js",
     "scripts": {
-        "start:pocker": "pnpm --filter pocker-admin dev"
+        "start:pocker": "pnpm --filter pocker-admin dev",
+        "prepare": "husky install && chmod ug+x .husky/*"
     },
     "keywords": [],
     "author": "zjf",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "husky": "^8.0.0",
+        "chalk": "^4.1.1"
+    },
+    "lint-staged": {
+        "**/*.less": "stylelint --syntax less",
+        "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+        "**/*.{js,jsx,tsx,ts,less,md,json}": [
+            "prettier --write"
+        ]
+    }
 }
