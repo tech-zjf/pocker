@@ -5,10 +5,7 @@ export interface Player {
     phone: string;
     name: string;
     isMine: boolean;
-    pockers: Array<{
-        type: PockersTypeEnum;
-        value: string;
-    }>;
+    pockers: Array<{ type: PockersTypeEnum; value: string }>;
     isSpeech: boolean;
     status: string;
     betting: number;
