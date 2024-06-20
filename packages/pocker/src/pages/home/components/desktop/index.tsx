@@ -9,9 +9,9 @@ const mock: Player[] = [
         name: 'Throne丶殇影',
         isMine: true,
         pockers: [
-            { type: '红桃', value: 'A' },
-            { type: '黑桃', value: 'A' },
-            { type: '方块', value: 'A' }
+            { type: 1, value: 'A' },
+            { type: 1, value: '2' },
+            { type: 4, value: '3' }
         ],
         isSpeech: true,
         status: '看牌',
@@ -23,37 +23,51 @@ const mock: Player[] = [
         name: '希望之星over',
         isMine: false,
         pockers: [
-            { type: '红桃', value: 'A' },
-            { type: '黑桃', value: 'A' },
-            { type: '方块', value: 'A' }
+            { type: 1, value: 'A' },
+            { type: 1, value: '2' },
+            { type: 4, value: '3' }
         ],
         isSpeech: false,
         status: '未看牌',
         betting: 20
     },
     {
-        id: 1,
+        id: 3,
         phone: '1234',
         name: 'LC畅玩',
         isMine: false,
         pockers: [
-            { type: '红桃', value: 'A' },
-            { type: '黑桃', value: 'A' },
-            { type: '方块', value: 'A' }
+            { type: 2, value: 'J' },
+            { type: 3, value: 'Q' },
+            { type: 3, value: 'K' }
         ],
         isSpeech: false,
-        status: '为看牌',
+        status: '未看牌',
         betting: 20
     },
     {
-        id: 1,
+        id: 4,
         phone: '1234',
         name: 'Throne丶殇夜',
         isMine: false,
         pockers: [
-            { type: '红桃', value: 'A' },
-            { type: '黑桃', value: 'A' },
-            { type: '方块', value: 'A' }
+            { type: 1, value: '2' },
+            { type: 2, value: '3' },
+            { type: 3, value: '4' }
+        ],
+        isSpeech: false,
+        status: '弃牌',
+        betting: 20
+    },
+    {
+        id: 5,
+        phone: '1234',
+        name: '我是怪人',
+        isMine: false,
+        pockers: [
+            { type: 1, value: 'A' },
+            { type: 2, value: 'A' },
+            { type: 3, value: 'A' }
         ],
         isSpeech: false,
         status: '弃牌',
@@ -62,11 +76,11 @@ const mock: Player[] = [
 ];
 
 const PockerDesktop: React.FC = () => {
-    const otherPlayers = mock.slice(1, 4);
+    const otherPlayers = mock.slice(1, 5);
     const mine = mock[0];
     return (
         <div className="h-full flex  flex-col ">
-            <div className={`flex-1 grid  grid-cols-${otherPlayers.length} gap-x-5`}>
+            <div className={`flex-1 grid  grid-cols-4 gap-x-5`}>
                 {otherPlayers.map((item) => {
                     return <DesktopOtherPlayerItem key={item.id} item={item} />;
                 })}

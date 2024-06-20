@@ -1,10 +1,12 @@
+import { PockersTypeEnum } from './constants';
+
 export interface Player {
     id: number;
     phone: string;
     name: string;
     isMine: boolean;
     pockers: Array<{
-        type: string;
+        type: PockersTypeEnum;
         value: string;
     }>;
     isSpeech: boolean;
