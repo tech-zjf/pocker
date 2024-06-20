@@ -13,12 +13,5 @@
     "devDependencies": {
         "husky": "^8.0.0",
         "chalk": "^4.1.1"
-    },
-    "lint-staged": {
-        "**/*.less": "stylelint --syntax less",
-        "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
-        "**/*.{js,jsx,tsx,ts,less,md,json}": [
-            "prettier --write"
-        ]
     }
 }
