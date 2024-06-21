@@ -7,7 +7,7 @@ export const V1PREFIX = '/api/v1';
 
 const http = axios.create({
     timeout: 2000,
-    baseURL: import.meta.env.VITE_BASE_URL + V1PREFIX,
+    baseURL: import.meta.env.VITE_BASE_URL,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
