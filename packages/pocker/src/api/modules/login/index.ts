@@ -9,7 +9,7 @@ export class LoginApi {
     }
 
     async loginByPhone(loginParams: LoginParams): Promise<LoginResponse> {
-        const { data } = await this.axios.post('/auth/phone', {
+        const { data } = await this.axios.post('/auth/login', {
             ...loginParams
         });
         return data;

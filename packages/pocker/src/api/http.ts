@@ -3,9 +3,14 @@ import { ApiCode } from './constant';
 import { message } from 'antd';
 import { getToken } from '@/libs/storage';
 
+export const V1PREFIX = '/api/v1';
+
 const http = axios.create({
     timeout: 2000,
-    baseURL: import.meta.env.VITE_BASE_URL
+    baseURL: import.meta.env.VITE_BASE_URL + V1PREFIX,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
 });
 
 http.interceptors.request.use((config) => {

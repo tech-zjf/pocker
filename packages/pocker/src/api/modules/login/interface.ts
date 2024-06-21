@@ -1,11 +1,11 @@
-import { AuthorDetailResponse } from "../user/interface";
+import { AuthorDetailResponse } from '../user/interface';
 
 export interface LoginParams {
-  phone: string;
-  code: string;
+    username: string;
+    password: string;
 }
 
 export interface LoginResponse {
-  user: AuthorDetailResponse;
-  token: string;
+    accessToken: string;
+    tokenType: string;
 }

@@ -20,3 +20,9 @@ export const PockerCardCenterImageMap = new Map([
     [PockersTypeEnum.MEI_HUA, MEI_HUA_IMG],
     [PockersTypeEnum.FANG_kUAI, FANG_KUAI_IMG]
 ]);
+
+//  自己
+//  看牌/弃牌  状态才能看到卡牌数据 否则展示卡片背面
+
+//  好有
+//  只有当好有时弃牌才能看到好友的卡牌数据
