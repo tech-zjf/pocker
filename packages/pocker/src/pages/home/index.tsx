@@ -1,10 +1,4 @@
-import PockerDesktop from './components/desktop';
-
 const Home: React.FC = () => {
-    return (
-        <div className="h-full ">
-            <PockerDesktop />
-        </div>
-    );
+    return <div className="h-full ">房间</div>;
 };
 export default Home;
