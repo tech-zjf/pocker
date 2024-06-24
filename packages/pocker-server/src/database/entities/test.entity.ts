@@ -1,13 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Post {
+export class Test {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    title: string;
+    name: string;
 
     @Column()
-    text: string;
+    desc: string;
+
+    @Column({ enum: { 1: '未完成', 2: '进行中' } })
+    status: number;
 }
