@@ -26,13 +26,18 @@
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^3.2.2",
         "@nestjs/core": "^9.0.0",
+        "@nestjs/jwt": "^10.2.0",
+        "@nestjs/mapped-types": "^2.0.5",
         "@nestjs/platform-express": "^9.0.0",
         "@nestjs/typeorm": "^10.0.2",
+        "class-validator": "^0.14.1",
         "cross-env": "^7.0.3",
+        "dayjs": "^1.11.11",
         "mysql2": "^3.10.1",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.2.0",
-        "typeorm": "^0.3.20"
+        "typeorm": "^0.3.20",
+        "class-transformer": "^0.5.1"
     },
     "devDependencies": {
         "@nestjs/cli": "^9.0.0",
@@ -55,7 +60,8 @@
         "ts-loader": "^9.2.3",
         "ts-node": "^10.0.0",
         "tsconfig-paths": "4.2.0",
-        "typescript": "^5.0.0"
+        "typescript": "^4.7.4",
+        "cors": "^2.8.5"
     },
     "jest": {
         "moduleFileExtensions": [

@@ -41,14 +41,14 @@ export class Player {
         type: 'datetime',
         comment: '创建时间',
     })
-    createTime: Date;
+    createTime: string;
 
     @UpdateDateColumn({
         name: 'update_time',
         type: 'datetime',
         comment: '更新时间',
     })
-    updateTime: Date;
+    updateTime: string;
 
     @DeleteDateColumn({
         name: 'delete_time',
@@ -56,5 +56,5 @@ export class Player {
         type: 'datetime',
         nullable: true,
     })
-    deleteTime: Date | null;
+    deleteTime: string | null;
 }
