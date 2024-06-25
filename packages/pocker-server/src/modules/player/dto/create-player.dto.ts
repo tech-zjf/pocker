@@ -7,8 +7,8 @@ export class CreatePlayerDto extends PartialType(Player) {
     @MaxLength(20)
     nickname: string;
 
-    @IsPhoneNumber('CN', { message: '手机号不正确' })
-    readonly phone: string;
+    @IsString()
+    phone: string;
 
     @IsString()
     @MaxLength(255)

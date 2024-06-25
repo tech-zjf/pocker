@@ -1,4 +1,9 @@
+import { IsString } from 'class-validator';
+
 export class CreateAuthDto {
-    phone: number;
+    @IsString()
+    phone: string;
+
+    @IsString()
     password: string;
 }

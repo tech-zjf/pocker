@@ -8,9 +8,9 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post()
-    signIn(@Body() createAuthDto: CreateAuthDto) {
-        console.log(1231);
-        return this.authService.signIn(createAuthDto);
+    async signIn(@Body() createAuthDto: CreateAuthDto) {
+        const player = await this.authService.signIn(createAuthDto);
+        return player;
     }
 
     @Get()

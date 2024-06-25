@@ -7,10 +7,10 @@ export const V1PREFIX = '/api/v1';
 
 const http = axios.create({
     timeout: 2000,
-    baseURL: import.meta.env.VITE_BASE_URL,
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    baseURL: import.meta.env.VITE_BASE_URL
+    // headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    // }
 });
 
 http.interceptors.request.use((config) => {
@@ -26,7 +26,8 @@ http.interceptors.response.use((response) => {
     if (code == ApiCode.SUCCESS) {
         return Promise.resolve(response.data);
     } else {
-        message.error('请求失败，请联系管理员');
+        const { msg } = response.data;
+        message.error(msg);
         return Promise.reject(response.data);
     }
 });
