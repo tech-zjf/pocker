@@ -14,9 +14,9 @@ const LoginCard: React.FC<LoginCardProps> = (props) => {
 
     const onFinish = async (values: LoginParams) => {
         try {
-            const { accessToken } = await $request.login.loginByPhone(values);
+            const { token } = await $request.login.loginByPhone(values);
             message.success('登录成功！');
-            setToken(accessToken);
+            setToken(token);
             navigate('/');
         } catch (error) {}
     };

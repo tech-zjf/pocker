@@ -6,6 +6,5 @@ export interface LoginParams {
 }
 
 export interface LoginResponse {
-    accessToken: string;
-    tokenType: string;
+    token: string;
 }
