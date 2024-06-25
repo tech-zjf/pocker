@@ -9,8 +9,8 @@ export class AuthController {
 
     @Post()
     async signIn(@Body() createAuthDto: CreateAuthDto) {
-        const player = await this.authService.signIn(createAuthDto);
-        return player;
+        const auth = await this.authService.signIn(createAuthDto);
+        return auth;
     }
 
     @Get()

@@ -7,10 +7,11 @@ import * as dayjs from 'dayjs';
 import { ApiException } from '@/core/filters/api.exception';
 import { ApiCode } from '@/constants/api-code';
 import { FORMAT } from '@/constants/dayjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(readonly playerService: PlayerService) {}
+    constructor(private readonly jwtService: JwtService, readonly playerService: PlayerService) {}
 
     async signIn(createAuthDto: CreateAuthDto) {
         const { phone, password } = createAuthDto;
@@ -21,23 +22,10 @@ export class AuthService {
         if (password != player.password) {
             throw new ApiException(ApiCode.PASSWORD_ERR);
         }
-        try {
-            const createPlayer = {
-                uid: '00000001',
-                nickname: player.name,
-                phone: phone.toString(),
-                description: player.description,
-                wechatAvatarUrl: player.wechatAvatarUrl,
-                createTime: dayjs().format(FORMAT.DATETIME),
-                updateTime: dayjs().format(FORMAT.DATETIME),
-                deleteTime: null,
-            };
-            const createRet = await this.playerService.create(createPlayer);
-            return this.playerService.findOne(createRet.uid);
-        } catch (error) {
-            console.log(error);
-            throw new ApiException(ApiCode.USER_NOT_FOUND);
-        }
+        const payload = { sub: phone };
+        return {
+            token: this.jwtService.sign(payload),
+        };
     }
 
     findAll() {
