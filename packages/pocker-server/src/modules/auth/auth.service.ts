@@ -23,6 +23,7 @@ export class AuthService {
         }
         try {
             const createPlayer = {
+                uid: '00000001',
                 nickname: player.name,
                 phone: phone.toString(),
                 description: player.description,
@@ -31,8 +32,8 @@ export class AuthService {
                 updateTime: dayjs().format(FORMAT.DATETIME),
                 deleteTime: null,
             };
-            await this.playerService.create(createPlayer);
-            return createPlayer;
+            const createRet = await this.playerService.create(createPlayer);
+            return this.playerService.findOne(createRet.uid);
         } catch (error) {
             console.log(error);
             throw new ApiException(ApiCode.USER_NOT_FOUND);

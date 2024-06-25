@@ -13,7 +13,7 @@ const baseConfig: DataSourceOptions = {
 // 该对象用于 nestjs typeorm 初始化
 export const ormConfig: DataSourceOptions = {
     ...baseConfig,
-    entities: ['dist/**/entities/*.entity{.js,.ts}'],
+    entities: ['dist/**/entityes/*.entity{.js,.ts}'],
 };
 
 // 该对象 typeorm cli 迁移时使用

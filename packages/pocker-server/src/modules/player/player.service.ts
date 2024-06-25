@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Player } from '@/database/entityes/player.entity';
+import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class PlayerService {
-    create(createPlayerDto: CreatePlayerDto) {
-        console.log('createPlayerDto===', createPlayerDto);
-        return 'This action adds a new player';
+    constructor(@InjectRepository(Player) private readonly playerRepository: Repository<Player>) {}
+
+    async create(createPlayerDto: CreatePlayerDto) {
+        const player = this.playerRepository.create(createPlayerDto);
+        return await this.playerRepository.save(player);
+    }
+
+    async findOne(uid: string) {
+        return await this.playerRepository.findOneBy({ uid });
     }
 
     findAll() {
         return `This action returns all player`;
-    }
-
-    findOne(id: number) {
-        return `This action returns a #${id} player`;
     }
 
     update(id: number, updatePlayerDto: UpdatePlayerDto) {

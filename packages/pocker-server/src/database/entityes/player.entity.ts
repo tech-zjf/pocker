@@ -1,19 +1,8 @@
-import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
 export class Player {
-    @PrimaryGeneratedColumn({
-        name: 'uid',
-        comment: '用户id',
-        type: 'bigint',
-    })
+    @PrimaryGeneratedColumn({ type: 'bigint', name: 'uid', unsigned: true })
     uid: string;
 
     @Column('varchar', {
@@ -30,7 +19,7 @@ export class Player {
     description: string;
 
     @Column('varchar', {
-        name: 'wechat_avatar_url',
+        name: 'wechatAvatarUrl',
         nullable: true,
         length: 255,
     })
