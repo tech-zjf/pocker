@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity()
 export class Player {
     @PrimaryGeneratedColumn({ type: 'bigint', name: 'uid', unsigned: true })
-    uid: string;
+    uid: number;
 
     @Column('varchar', {
         name: 'nickname',
@@ -12,18 +12,17 @@ export class Player {
     nickname: string;
 
     @Column('varchar', {
+        name: 'phone',
+        comment: '手机号',
+    })
+    phone: string;
+
+    @Column('varchar', {
         name: 'description',
         comment: '用户描述',
         length: 255,
     })
     description: string;
-
-    @Column('varchar', {
-        name: 'add',
-        comment: '测试',
-        length: 255,
-    })
-    add: string;
 
     @Column('varchar', {
         name: 'wechat_avatar_url',

@@ -3,30 +3,24 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '@/database/entityes/player.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ApiException } from '@/core/filters/api.exception';
+import { ApiCode } from '@/constants/api-code';
 
 @Injectable()
 export class PlayerService {
     constructor(@InjectRepository(Player) private readonly playerRepository: Repository<Player>) {}
 
     async create(createPlayerDto: CreatePlayerDto) {
-        const player = this.playerRepository.create(createPlayerDto);
-        return await this.playerRepository.save(player);
+        const createPlayer = await this.playerRepository.create(createPlayerDto);
+        const res = await this.playerRepository.save(createPlayer);
+        return res;
     }
 
-    async findOne(uid: string) {
-        return await this.playerRepository.findOneBy({ uid });
-    }
-
-    findAll() {
-        return `This action returns all player`;
-    }
-
-    update(id: number, updatePlayerDto: UpdatePlayerDto) {
-        return `This action updates a #${id} player`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} player`;
+    async findOneByPhone(phone: string) {
+        if (!phone) {
+            throw new ApiException(ApiCode.NOT_LOGIN);
+        }
+        return await this.playerRepository.findOneBy({ phone });
     }
 }

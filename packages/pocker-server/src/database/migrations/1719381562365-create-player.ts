@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreatePlayer1719216235880 implements MigrationInterface {
+export class CreatePlayer1719381562365 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
@@ -10,12 +10,19 @@ export class CreatePlayer1719216235880 implements MigrationInterface {
                         name: 'uid',
                         type: 'int',
                         unsigned: true,
+                        isGenerated: true,
+                        generationStrategy: 'increment',
                         isPrimary: true,
                     },
                     {
                         name: 'nickname',
                         type: 'varchar',
                         length: '255',
+                    },
+                    {
+                        name: 'phone',
+                        type: 'varchar',
+                        length: '11',
                     },
                     {
                         name: 'description',

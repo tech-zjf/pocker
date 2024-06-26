@@ -18,9 +18,21 @@ export class AuthService {
         if (!WHITE_LIST.has(phone)) {
             throw new ApiException(ApiCode.USER_NOT_FOUND);
         }
-        const player = WHITE_LIST.get(phone);
-        if (password != player.password) {
+        const whiteItem = WHITE_LIST.get(phone);
+        if (password != whiteItem.password) {
             throw new ApiException(ApiCode.PASSWORD_ERR);
+        }
+        let player = await this.playerService.findOneByPhone(phone);
+        if (!player) {
+            player = await this.playerService.create({
+                nickname: whiteItem.name,
+                phone: phone,
+                wechatAvatarUrl: whiteItem.wechatAvatarUrl,
+                description: whiteItem.description,
+                createTime: dayjs().format(FORMAT.DATETIME),
+                updateTime: dayjs().format(FORMAT.DATETIME),
+                deleteTime: null,
+            });
         }
         const payload = { sub: phone };
         return {
