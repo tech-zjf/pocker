@@ -19,7 +19,14 @@ export class Player {
     description: string;
 
     @Column('varchar', {
-        name: 'wechatAvatarUrl',
+        name: 'add',
+        comment: '测试',
+        length: 255,
+    })
+    add: string;
+
+    @Column('varchar', {
+        name: 'wechat_avatar_url',
         nullable: true,
         length: 255,
     })

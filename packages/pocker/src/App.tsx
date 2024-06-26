@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { getToken } from './libs/storage';
+import $request from './api';
 
 const { Header, Content, Sider } = Layout;
 
@@ -10,6 +12,19 @@ const App: React.FC = () => {
         token: { colorBgContainer, borderRadiusLG }
     } = theme.useToken();
     const route = useNavigate();
+    const token = getToken();
+
+    const fetchPlayer = async () => {
+        const player = await $request.user.getUserInfo();
+        console.log(player);
+    };
+
+    useEffect(() => {
+        if (!token) {
+        } else {
+            fetchPlayer();
+        }
+    }, [token]);
 
     return (
         <Layout className=" h-full">

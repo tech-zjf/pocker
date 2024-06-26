@@ -8,10 +8,8 @@ export class CreatePlayer1719216235880 implements MigrationInterface {
                 columns: [
                     {
                         name: 'uid',
-                        type: 'char',
-                        length: '8',
-                        isGenerated: true,
-                        generationStrategy: 'uuid',
+                        type: 'int',
+                        unsigned: true,
                         isPrimary: true,
                     },
                     {
@@ -26,7 +24,7 @@ export class CreatePlayer1719216235880 implements MigrationInterface {
                         isNullable: true,
                     },
                     {
-                        name: 'wechatAvatarUrl',
+                        name: 'wechat_avatar_url',
                         type: 'varchar',
                         length: '255',
                     },
@@ -40,8 +38,7 @@ export class CreatePlayer1719216235880 implements MigrationInterface {
                         name: 'update_time',
                         type: 'datetime',
                         comment: '更新时间',
-                        default:
-                            'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                        default: 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
                     },
                     {
                         name: 'delete_time',

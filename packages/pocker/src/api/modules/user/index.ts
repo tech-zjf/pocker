@@ -1,15 +1,15 @@
-import { AxiosInstance } from "axios";
-import { AuthorDetailResponse } from "./interface";
+import { AxiosInstance } from 'axios';
+import { AuthorDetailResponse } from './interface';
 
 export class UserApi {
-  axios: AxiosInstance;
+    axios: AxiosInstance;
 
-  constructor(axios: AxiosInstance) {
-    this.axios = axios;
-  }
+    constructor(axios: AxiosInstance) {
+        this.axios = axios;
+    }
 
-  async getUserInfo(uid: string): Promise<AuthorDetailResponse> {
-    const user: AuthorDetailResponse = await this.axios.get(`/user/${uid}`);
-    return user;
-  }
+    async getUserInfo(): Promise<AuthorDetailResponse> {
+        const user: AuthorDetailResponse = await this.axios.get(`/player`);
+        return user;
+    }
 }
