@@ -1,11 +1,28 @@
 import { Space, Card, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import useSocket from '@/libs/hooks/use-socket';
+import { useEffect } from 'react';
+import { Socket, io } from 'socket.io-client';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const toRoomPage = () => {
         navigate('/room');
     };
+
+    useEffect(() => {
+        try {
+            const socket: Socket = io('http://localhost:4000');
+            socket.emit('createWsDemo', '这是客户端消息啊', (response: any) => {
+                console.log('Received response:', response);
+            });
+            socket.on('message', (message) => {
+                console.log('>>>>>>message', message);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
 
     return (
         <div className="room-container">

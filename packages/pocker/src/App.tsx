@@ -26,7 +26,7 @@ const App: React.FC = () => {
         } else {
             fetchPlayer();
         }
-    }, [token]);
+    }, []);
 
     return (
         <div className=" w-full min-h-full bg-gray-100 pb-5">

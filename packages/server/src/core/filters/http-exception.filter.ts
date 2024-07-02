@@ -6,7 +6,6 @@ import { ApiCode } from '@/constants/api-code';
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
     catch(exception, host: ArgumentsHost): void {
-        console.log(exception);
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         if (exception instanceof ApiException) {
