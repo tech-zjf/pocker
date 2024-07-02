@@ -4,23 +4,23 @@ import { UpdateWebsocketPockerDto } from './dto/update-websocket-pocker.dto';
 
 @Injectable()
 export class WebsocketPockerService {
-  create(createWebsocketPockerDto: CreateWebsocketPockerDto) {
-    return 'This action adds a new websocketPocker';
-  }
+    create(createWebsocketPockerDto: CreateWebsocketPockerDto) {
+        return 'This action adds a new websocketPocker';
+    }
 
-  findAll() {
-    return `This action returns all websocketPocker`;
-  }
+    findAll() {
+        return ` This action returns all websocketPocker`;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} websocketPocker`;
-  }
+    findOne(id: number) {
+        return `This action returns a #${id} websocketPocker`;
+    }
 
-  update(id: number, updateWebsocketPockerDto: UpdateWebsocketPockerDto) {
-    return `This action updates a #${id} websocketPocker`;
-  }
+    update(id: number, updateWebsocketPockerDto: UpdateWebsocketPockerDto) {
+        return `This action updates a #${id} websocketPocker`;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} websocketPocker`;
-  }
+    remove(id: number) {
+        return `This action removes a #${id} websocketPocker`;
+    }
 }

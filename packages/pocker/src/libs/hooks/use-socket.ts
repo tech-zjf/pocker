@@ -1,7 +1,7 @@
 import { Socket, io } from 'socket.io-client';
 
 const useSocket = () => {
-    const socket: Socket = io('http://127.0.0.1:8080');
+    const socket: Socket = io('http://localhost:4000');
     return {
         socket
     };

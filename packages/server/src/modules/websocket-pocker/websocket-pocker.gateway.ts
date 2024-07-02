@@ -1,37 +1,59 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { WebsocketPockerService } from './websocket-pocker.service';
-import { CreateWebsocketPockerDto } from './dto/create-websocket-pocker.dto';
-import { UpdateWebsocketPockerDto } from './dto/update-websocket-pocker.dto';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({ cors: true })
 export class WebsocketPockerGateway {
     @WebSocketServer()
     server: Server;
-    constructor(private readonly websocketPockerService: WebsocketPockerService) {}
-
-    @SubscribeMessage('createWebsocketPocker')
-    create(@MessageBody() createWebsocketPockerDto: CreateWebsocketPockerDto) {
-        return this.websocketPockerService.create(createWebsocketPockerDto);
+    rooms: Array<Record<string, any>>;
+    constructor(private readonly websocketPockerService: WebsocketPockerService) {
+        this.rooms = [];
     }
 
-    @SubscribeMessage('findAllWebsocketPocker')
-    findAll() {
-        return this.websocketPockerService.findAll();
+    /** 获取房间列表 */
+    @SubscribeMessage('getRoomList')
+    async getRoomList() {
+        console.log(`客户端获取了房间列表：${this.rooms.length}`);
+        this.server.emit('updateRoomList', this.rooms);
     }
 
-    @SubscribeMessage('findOneWebsocketPocker')
-    findOne(@MessageBody() id: number) {
-        return this.websocketPockerService.findOne(id);
+    /** 创建房间 */
+    @SubscribeMessage('createRoom')
+    async createRoom(@MessageBody() room: Record<string, any>, @ConnectedSocket() client: Socket) {
+        await this.rooms.push({
+            ...room,
+            players: [],
+            playerSize: 0,
+        });
+        await this.server.emit('updateRoomList', this.rooms);
     }
 
-    @SubscribeMessage('updateWebsocketPocker')
-    update(@MessageBody() updateWebsocketPockerDto: UpdateWebsocketPockerDto) {
-        return this.websocketPockerService.update(updateWebsocketPockerDto.id, updateWebsocketPockerDto);
+    /** 玩家加入房间 */
+    @SubscribeMessage('joinRoom')
+    async joinRoom(@MessageBody() joinRoomDto: any, @ConnectedSocket() client: Socket) {
+        const { room, player } = joinRoomDto;
+        await this.server.to(room.id).emit('joined', `加入了房间`);
+        console.log(room, player);
+        await this.addPlayerByRoomId(room.id, player);
+        await client.join(room.id);
     }
 
-    @SubscribeMessage('removeWebsocketPocker')
-    remove(@MessageBody() id: number) {
-        return this.websocketPockerService.remove(id);
+    addPlayerByRoomId(roomId: string, player) {
+        const room = this.rooms.find((r) => r.id == roomId);
+        if (!room) {
+            throw new Error('找不到该房间！');
+        }
+        this.rooms = [...this.rooms].map((v) => {
+            if (v.id == roomId) {
+                return {
+                    ...v,
+                    players: [...v.players, player],
+                    playerSize: v.playerSize + 1,
+                };
+            } else {
+                return v;
+            }
+        });
     }
 }
