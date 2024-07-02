@@ -13,7 +13,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         try {
             const socket: Socket = io('http://localhost:4000');
-            socket.emit('createWsDemo', '这是客户端消息啊', (response: any) => {
+            socket.emit('createWebsocketPocker', '这是客户端消息啊', (response: any) => {
                 console.log('Received response:', response);
             });
             socket.on('message', (message) => {
