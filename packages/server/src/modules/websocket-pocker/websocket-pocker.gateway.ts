@@ -1,12 +1,13 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { WebsocketPockerService } from './websocket-pocker.service';
 import { Server, Socket } from 'socket.io';
+import { GameRoom } from './interface';
 
 @WebSocketGateway({ cors: true })
 export class WebsocketPockerGateway {
     @WebSocketServer()
     server: Server;
-    rooms: Array<Record<string, any>>;
+    rooms: Array<any>;
     constructor(private readonly websocketPockerService: WebsocketPockerService) {
         this.rooms = [];
     }

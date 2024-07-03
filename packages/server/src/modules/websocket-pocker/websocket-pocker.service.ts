@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWebsocketPockerDto } from './dto/create-websocket-pocker.dto';
 import { UpdateWebsocketPockerDto } from './dto/update-websocket-pocker.dto';
+import { Server, Socket } from 'socket.io';
+import { ConnectedSocket, MessageBody, WebSocketServer } from '@nestjs/websockets';
+import { GameRoom } from './interface';
 
 @Injectable()
 export class WebsocketPockerService {
-    create(createWebsocketPockerDto: CreateWebsocketPockerDto) {
-        return 'This action adds a new websocketPocker';
-    }
-
     findAll() {
         return ` This action returns all websocketPocker`;
     }

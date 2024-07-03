@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
-@Entity()
+@Entity('player')
 export class Player {
     @PrimaryGeneratedColumn({ type: 'bigint', name: 'uid', unsigned: true })
     uid: number;
