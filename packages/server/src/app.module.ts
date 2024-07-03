@@ -14,6 +14,7 @@ import { ApiInterceptor } from './core/interceptor/api.interceptor';
 import { LoggerMiddleware } from './core/middleware/logger.middleware';
 import { JwtMiddleware } from './core/middleware/jwt.middleware';
 import { WebsocketPockerModule } from './modules/websocket-pocker/websocket-pocker.module';
+import { RoomModule } from './modules/room/room.module';
 
 @Module({
     imports: [
@@ -35,6 +36,7 @@ import { WebsocketPockerModule } from './modules/websocket-pocker/websocket-pock
         AuthModule,
         PlayerModule,
         WebsocketPockerModule,
+        RoomModule,
     ],
     controllers: [AppController],
     providers: [

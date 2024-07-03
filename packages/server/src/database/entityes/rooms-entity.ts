@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('rooms')
-class RoomsEntity {
+export class RoomsEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'id', unsigned: true })
     id: number;
 
@@ -12,13 +12,13 @@ class RoomsEntity {
     roomNo: string;
 
     @Column('int', { name: 'max_players', comment: '玩家上线人数' })
-    maxPlayers: string;
+    maxPlayers: number;
 
     @Column('int', { name: 'player_num', comment: '当前房间人数' })
-    playerNum: string;
+    playerNum: number;
 
     @Column('int', { name: 'ready_players', comment: '已准备好玩家人数' })
-    readyPlayers: string;
+    readyPlayers: number;
 
     @Column('tinyint', {
         name: 'room_state',
