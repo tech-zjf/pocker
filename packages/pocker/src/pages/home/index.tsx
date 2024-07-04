@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import CreateRoomModal from './components/create-room-modal';
 import RoomItem from './components/room-card';
 import { orderBy } from 'lodash';
+import { GameRoomItem } from '@/api/modules/room/interface';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -11,18 +12,20 @@ const Home: React.FC = () => {
     const [createRoomModal, setCreateRoomModal] = useState(false);
 
     useEffect(() => {
+        function updateRooms(res: { list: GameRoomItem[]; total: number }) {
+            const { list } = res;
+            setRooms(list);
+        }
+
         // 通知服务端推送房间列表
         socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
+
         // 服务端推送过来的房间列表
-        socket.on('updateRoomList', (roomRes) => {
-            const { list, total } = roomRes;
-            console.log('room-list', list);
-            setRooms(list);
-        });
-        // 服务端推送过来的玩家加入房间了
-        socket.on('joined', (playerJoinMsg) => {
-            console.log('joined', playerJoinMsg);
-        });
+        socket.on('updateRoomList', updateRooms);
+
+        return () => {
+            socket.off('updateRoomList', updateRooms);
+        };
     }, []);
 
     return (

@@ -21,8 +21,9 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
                 ...formData,
                 maxPlayers: +formData.maxPlayers
             };
-            const data = await $request.room.createRoom(createRoomParams);
+            await $request.room.createRoom(createRoomParams);
             message.success('创建成功！');
+            socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
             _onCancel();
         } catch (error) {}
     };
