@@ -14,15 +14,13 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
     const { roomItem } = props;
     const navigate = useNavigate();
     const { socket } = useSocket();
+    const player = getUserInfo();
 
     const onJoinRoom = () => {
         socket.emit('joinRoom', {
-            room: roomItem,
-            player: getUserInfo()
+            roomNo: roomItem.roomNo,
+            uid: player.uid
         });
-        setTimeout(() => {
-            socket.emit('getRoomList');
-        }, 2000);
     };
 
     return (

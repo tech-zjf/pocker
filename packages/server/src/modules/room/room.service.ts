@@ -7,10 +7,16 @@ import { Repository } from 'typeorm';
 import StringTools from '@/tools/string-tools';
 import { RoomStatusEnum } from './interface';
 import { GetAllRoomDto } from './dto/get-all-room.dto';
+import { RoomPlayersEntity } from '@/database/entityes/room-players.entity';
+import { ApiException } from '@/core/filters/api.exception';
+import { ApiCode } from '@/constants/api-code';
 
 @Injectable()
 export class RoomService {
-    constructor(@InjectRepository(RoomsEntity) private readonly roomRepo: Repository<RoomsEntity>) {}
+    constructor(
+        @InjectRepository(RoomsEntity) private readonly roomRepo: Repository<RoomsEntity>,
+        @InjectRepository(RoomPlayersEntity) private readonly roomPlayersRepo: Repository<RoomPlayersEntity>,
+    ) {}
 
     async create(createRoomDto: CreateRoomDto) {
         try {
@@ -22,10 +28,9 @@ export class RoomService {
                 roomState: RoomStatusEnum.WAIT,
             });
             const res = await this.roomRepo.save(createRoom);
-            console.log(res);
             return res;
         } catch (error) {
-            console.log(error);
+            throw new ApiException(ApiCode.CREATE_ROOM_ERROR);
         }
     }
 
