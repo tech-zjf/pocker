@@ -8,3 +8,7 @@ export enum RoomStatusEnum {
      */
     GAMEING = 2,
 }
+
+export enum RoomPlayersStatusEnum {
+    READING = 1,
+}

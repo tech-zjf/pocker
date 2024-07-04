@@ -1,12 +1,12 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('room-players')
+@Entity('room_players')
 export class RoomPlayersEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'id', unsigned: true })
     id: number;
 
     @Column('int', { name: 'uid', comment: '用户id', unsigned: true, default: () => 0, nullable: false })
-    uid: number;
+    uid: string;
 
     @Column('varchar', { name: 'room_no', comment: '房间号' })
     roomNo: string;

@@ -5,11 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RoomsEntity } from '@/database/entityes/rooms-entity';
 import { Repository } from 'typeorm';
 import StringTools from '@/tools/string-tools';
-import { RoomStatusEnum } from './interface';
+import { RoomPlayersStatusEnum, RoomStatusEnum } from './interface';
 import { GetAllRoomDto } from './dto/get-all-room.dto';
 import { RoomPlayersEntity } from '@/database/entityes/room-players.entity';
 import { ApiException } from '@/core/filters/api.exception';
 import { ApiCode } from '@/constants/api-code';
+import { JoinRoomDto } from './dto/join-room.dto';
 
 @Injectable()
 export class RoomService {
@@ -18,6 +19,9 @@ export class RoomService {
         @InjectRepository(RoomPlayersEntity) private readonly roomPlayersRepo: Repository<RoomPlayersEntity>,
     ) {}
 
+    /**
+     *  创建房间
+     */
     async create(createRoomDto: CreateRoomDto) {
         try {
             const createRoom = await this.roomRepo.create({
@@ -34,6 +38,9 @@ export class RoomService {
         }
     }
 
+    /**
+     * 获取房间列表
+     */
     async findAll(params: GetAllRoomDto) {
         try {
             const qb = this.roomRepo
@@ -48,8 +55,56 @@ export class RoomService {
         } catch (error) {}
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} room`;
+    /** 加入房间 */
+    async joinRoom(joinRoomDto: JoinRoomDto) {
+        // 拿到当前房间
+        const room = await this.findOneByRoomNo(joinRoomDto.roomNo);
+        // 人数已满
+        if (room.readyPlayers === room.maxPlayers) {
+            throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '房间人数满了！' });
+        }
+        // 游戏中状态
+        if (room.roomState === RoomStatusEnum.GAMEING) {
+            throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '游戏中，禁止加入！' });
+        }
+        // 当前用户是否加入其他房间
+        if (await this.IsJoinRoomByUid(joinRoomDto.uid)) {
+            throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '您已经在其他游戏房间中！' });
+        }
+        try {
+            const createRoomPlayer = await this.roomPlayersRepo.create({
+                ...joinRoomDto,
+                playerStatus: RoomPlayersStatusEnum.READING,
+            });
+            await this.roomPlayersRepo.save(createRoomPlayer);
+            // 更新房间人数
+            await this.roomRepo
+                .createQueryBuilder()
+                .update()
+                .set({
+                    playerNum: room.playerNum + 1,
+                    readyPlayers: room.readyPlayers + 1,
+                })
+                .where('roomNo = :roomNo', { roomNo: joinRoomDto.roomNo })
+                .execute();
+            return createRoomPlayer;
+        } catch (error) {
+            throw new ApiException(ApiCode.JOIN_ERROR);
+        }
+    }
+
+    /** 根据房间号查找房间 */
+    async findOneByRoomNo(roomNo: string) {
+        return await this.roomRepo.findOne({ where: { roomNo: roomNo } });
+    }
+
+    async IsJoinRoomByUid(uid: string) {
+        const res = await this.roomPlayersRepo.findOne({ where: { uid, leaveTime: null } });
+        return !!res;
+    }
+
+    async findOne(id: string) {
+        return 'findOne';
     }
 
     update(id: number, updateRoomDto: UpdateRoomDto) {

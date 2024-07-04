@@ -23,4 +23,8 @@ export class PlayerService {
         }
         return await this.playerRepository.findOneBy({ phone });
     }
+
+    async findOneByUid(uid: number) {
+        return await this.playerRepository.findOne({ where: { uid, deleteTime: null } });
+    }
 }

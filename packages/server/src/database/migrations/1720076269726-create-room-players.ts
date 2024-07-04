@@ -49,5 +49,7 @@ export class CreateRoomPlayers1720076269726 implements MigrationInterface {
         );
     }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {}
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable('room_players');
+    }
 }

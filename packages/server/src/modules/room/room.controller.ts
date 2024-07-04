@@ -3,6 +3,7 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { GetAllRoomDto } from './dto/get-all-room.dto';
+import { Phone } from '@/core/decorator/user.decorator';
 
 @Controller('room')
 export class RoomController {
@@ -13,6 +14,11 @@ export class RoomController {
         return this.roomService.create(createRoomDto);
     }
 
+    @Post(':roomNo')
+    joinRoom(@Param('roomNo') roomNo: string, @Body() joinRoomDto: { uid: string }) {
+        return this.roomService.joinRoom({ ...joinRoomDto, roomNo });
+    }
+
     @Get()
     findAll(params: GetAllRoomDto) {
         return this.roomService.findAll(params);
@@ -20,7 +26,7 @@ export class RoomController {
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.roomService.findOne(+id);
+        return this.roomService.findOne(id);
     }
 
     @Patch(':id')

@@ -1,11 +1,12 @@
 import { GameRoomItem } from '@/api/modules/room/interface';
 import useSocket from '@/libs/hooks/use-socket';
 import { getUserInfo } from '@/libs/storage';
-import { Button, Card } from 'antd';
+import { Button, Card, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { FORMAT } from '@/constants/dayjs';
 import { RoomStatusMap } from '../../constants';
+import { useEffect } from 'react';
 export interface RoomItemProps {
     roomItem: GameRoomItem;
 }
@@ -17,11 +18,36 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
     const player = getUserInfo();
 
     const onJoinRoom = () => {
-        socket.emit('joinRoom', {
-            roomNo: roomItem.roomNo,
-            uid: player.uid
-        });
+        socket.emit(
+            'joinRoom',
+            {
+                roomNo: roomItem.roomNo,
+                uid: player.uid
+            },
+            (res: { status: string }) => {
+                if (res.status == 'ok') {
+                    // 通知服务端推送房间列表
+                    socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
+                    // 跳转到该房间
+                    navigate(`/room/${roomItem.roomNo}`);
+                }
+            }
+        );
     };
+
+    useEffect(() => {
+        function joinErrorCallback(err: Error) {
+            message.error(err.message);
+        }
+
+        socket.on('join_error', (err) => {
+            message.error(err.message);
+        });
+
+        return () => {
+            socket.off('join_error', joinErrorCallback);
+        };
+    });
 
     return (
         <div className="col-span-1">

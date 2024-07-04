@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Player } from './entityes/player.entity';
 import { RoomsEntity } from './entityes/rooms-entity';
+import { RoomPlayersEntity } from './entityes/room-players.entity';
 
 // 基础配置
 const baseConfig: DataSourceOptions = {
@@ -16,7 +17,7 @@ const baseConfig: DataSourceOptions = {
 export const ormConfig: DataSourceOptions = {
     ...baseConfig,
     // entities: ['dist/**/entityes/*.entity{.js,.ts}'],
-    entities: [Player, RoomsEntity],
+    entities: [Player, RoomsEntity, RoomPlayersEntity],
 };
 
 // 该对象 typeorm cli 迁移时使用
