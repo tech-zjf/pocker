@@ -3,6 +3,7 @@ import useSocket from '@/libs/hooks/use-socket';
 import { useEffect, useState } from 'react';
 import CreateRoomModal from './components/create-room-modal';
 import RoomItem from './components/room-card';
+import { orderBy } from 'lodash';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -10,21 +11,18 @@ const Home: React.FC = () => {
     const [createRoomModal, setCreateRoomModal] = useState(false);
 
     useEffect(() => {
-        try {
-            // 通知服务端推送房间列表
-            socket.emit('getRoomList');
-            // 服务端推送过来的房间列表
-            socket.on('updateRoomList', (_rooms) => {
-                console.log('_rooms', _rooms);
-                setRooms(_rooms);
-            });
-            // 服务端推送过来的玩家加入房间了
-            socket.on('joined', (playerJoinMsg) => {
-                console.log('joined', playerJoinMsg);
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        // 通知服务端推送房间列表
+        socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
+        // 服务端推送过来的房间列表
+        socket.on('updateRoomList', (roomRes) => {
+            const { list, total } = roomRes;
+            console.log('room-list', list);
+            setRooms(list);
+        });
+        // 服务端推送过来的玩家加入房间了
+        socket.on('joined', (playerJoinMsg) => {
+            console.log('joined', playerJoinMsg);
+        });
     }, []);
 
     return (
