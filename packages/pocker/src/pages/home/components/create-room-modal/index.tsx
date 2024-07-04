@@ -1,5 +1,6 @@
+import $request from '@/api';
 import useSocket from '@/libs/hooks/use-socket';
-import { Form, Input, Modal } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 
 export interface CreateRoomModalProps {
     open: boolean;
@@ -20,9 +21,9 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
                 ...formData,
                 maxPlayers: +formData.maxPlayers
             };
-            socket.emit('createRoom', createRoomParams, () => {
-                _onCancel();
-            });
+            const data = await $request.room.createRoom(createRoomParams);
+            message.success('创建成功！');
+            _onCancel();
         } catch (error) {}
     };
 

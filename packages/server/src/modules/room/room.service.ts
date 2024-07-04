@@ -4,20 +4,28 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomsEntity } from '@/database/entityes/rooms-entity';
 import { Repository } from 'typeorm';
+import StringTools from '@/tools/string-tools';
+import { RoomStatusEnum } from './interface';
 
 @Injectable()
 export class RoomService {
     constructor(@InjectRepository(RoomsEntity) private readonly roomRepo: Repository<RoomsEntity>) {}
+
     async create(createRoomDto: CreateRoomDto) {
-        const createRoom = await this.roomRepo.create({
-            ...createRoomDto,
-            playerNum: 0,
-            readyPlayers: 0,
-            roomNo: new Date().toString(),
-            roomState: 1,
-        });
-        const res = await this.roomRepo.save(createRoom);
-        return res;
+        try {
+            const createRoom = await this.roomRepo.create({
+                ...createRoomDto,
+                playerNum: 0,
+                readyPlayers: 0,
+                roomNo: StringTools.generateRandomString(),
+                roomState: RoomStatusEnum.WAIT,
+            });
+            const res = await this.roomRepo.save(createRoom);
+            console.log(res);
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     findAll() {
