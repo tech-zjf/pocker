@@ -1,7 +1,6 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
 import { WebsocketPockerService } from './websocket-pocker.service';
 import { Server, Socket } from 'socket.io';
-import { GameRoom } from './interface';
 import { RoomService } from '../room/room.service';
 import { GetAllRoomDto } from '../room/dto/get-all-room.dto';
 import { JoinRoomDto } from '../room/dto/join-room.dto';
