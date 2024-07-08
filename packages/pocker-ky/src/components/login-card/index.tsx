@@ -14,9 +14,9 @@ const LoginCard: React.FC<LoginCardProps> = (props) => {
 
     const onFinish = async (values: LoginParams) => {
         try {
-            const { token } = await $request.login.loginByPhone(values);
+            const { accessToken } = await $request.login.login(values);
             message.success('登录成功！');
-            setToken(token);
+            setToken(accessToken);
             navigate('/');
         } catch (error) {}
     };
@@ -25,7 +25,7 @@ const LoginCard: React.FC<LoginCardProps> = (props) => {
         <div className={classNames('shadow p-5 rounded-md', className)} style={{ width: 300 }}>
             <h2 className=" text-gray-900 text-xl font-semibold  text-center pb-3 mb-5">登录</h2>
             <Form name="basic" labelCol={{ span: 24 }} style={{ maxWidth: 280 }} onFinish={onFinish} autoComplete="off" layout="vertical">
-                <Form.Item label="用户名" name="phone" rules={[{ required: true, message: '请输入用户名' }]}>
+                <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
