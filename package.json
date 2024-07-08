@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start:pocker": "pnpm --filter pocker-admin dev",
+        "start:pocker-ky": "pnpm --filter pocker-admin-ky dev",
         "start:pocker-server": "pnpm --filter server start:dev",
         "prepare": "husky install && chmod ug+x .husky/*"
     },
