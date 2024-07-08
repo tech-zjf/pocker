@@ -6,7 +6,7 @@ import { GetAllRoomDto } from '../room/dto/get-all-room.dto';
 import { JoinRoomDto } from '../room/dto/join-room.dto';
 import { PlayerService } from '../player/player.service';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, namespace: 'ws' })
 export class WebsocketPockerGateway {
     @WebSocketServer()
     server: Server;
