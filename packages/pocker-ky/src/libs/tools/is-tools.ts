@@ -5,4 +5,4 @@ class IsTools {
         return phoneRegxp.test(phone);
     }
 }
-export default IsTools
+export default IsTools;
