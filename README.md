@@ -13,6 +13,13 @@ pnpm run start:pocker-ky
 
 ```
 
+### 前端打包
+
+```
+pnpm run build:pocker-ky
+
+```
+
 ### 📁 项目目录
 
 ```

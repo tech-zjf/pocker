@@ -17,6 +17,7 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
     const { roomItem } = props;
     const navigate = useNavigate();
     const { socket } = useSocket();
+    socket.connect();
     const player = getUserInfo();
 
     const onJoinRoom = () => {
@@ -24,9 +25,7 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
             roomNo: roomItem.roomNo,
             userId: player.userId
         };
-        console.log('点击了加入房间', joinRoomParams);
         socket.emit(EventPushEnum.ON_JOIN_ROOM, joinRoomParams, (res: ApiResponse<unknown>) => {
-            console.log('join:', res);
             if (res.code == ApiCode.SUCCESS) {
                 // 通知服务端推送房间列表
                 socket.emit(EventPushEnum.ON_GAME_ROOM_LIST);
