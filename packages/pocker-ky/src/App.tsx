@@ -42,8 +42,8 @@ const App: React.FC = () => {
                     </div>
                     <div>
                         <div className=" flex items-center cursor-pointer">
-                            <p className=" text-gray-900 text-base font-semibold mr-4"> {playerInfo?.nickname}</p>
-                            <Avatar src={playerInfo?.wechatAvatarUrl} size="large" />
+                            <p className=" text-gray-900 text-base font-semibold mr-4"> {playerInfo?.username}</p>
+                            <Avatar src={playerInfo?.avatar} size="large" />
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
+import { ApiCode } from './constant';
+
 export interface ApiResponse<T> {
-    code: number;
-    message?: string;
+    code: ApiCode;
+    msg?: string;
     data: T;
 }

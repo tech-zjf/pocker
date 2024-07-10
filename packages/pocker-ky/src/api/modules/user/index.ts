@@ -9,7 +9,7 @@ export class UserApi {
     }
 
     async getUserInfo(): Promise<AuthorDetailResponse> {
-        const { data } = await this.axios.get(`/player`);
+        const { data } = await this.axios.get(`/api/v1/users/me`);
         return data;
     }
 }

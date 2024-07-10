@@ -1,16 +1,19 @@
 import $request from '@/api';
-import useSocket from '@/libs/hooks/use-socket';
+import { ApiResponse } from '@/api/interface';
+import useSocket, { EventPushEnum } from '@/libs/hooks/use-socket';
 import { Form, Input, Modal, message } from 'antd';
 
 export interface CreateRoomModalProps {
     open: boolean;
     onClose: () => void;
+    updateRooms: () => void;
 }
 
 const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
-    const { open, onClose } = props;
+    const { open, onClose, updateRooms } = props;
     const [form] = Form.useForm();
     const { socket } = useSocket();
+    socket.connect();
 
     /** 创建房间 */
     const createRoom = async () => {
@@ -21,10 +24,15 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
                 ...formData,
                 maxPlayers: +formData.maxPlayers
             };
-            await $request.room.createRoom(createRoomParams);
-            message.success('创建成功！');
-            socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
-            _onCancel();
+            socket.emit(EventPushEnum.ON_CREATE_ROOM, createRoomParams, (res: ApiResponse<unknown>) => {
+                if (res.code === '00000') {
+                    message.success('创建成功！');
+                    updateRooms();
+                    _onCancel();
+                } else {
+                    message.error('创建失败：联系我奕哥！');
+                }
+            });
         } catch (error) {}
     };
 

@@ -1,30 +1,36 @@
 import { Button } from 'antd';
-import useSocket from '@/libs/hooks/use-socket';
+import useSocket, { EventListenerEnum, EventPushEnum } from '@/libs/hooks/use-socket';
 import { useEffect, useState } from 'react';
 import CreateRoomModal from './components/create-room-modal';
 import RoomItem from './components/room-card';
-import { orderBy } from 'lodash';
 import { GameRoomItem } from '@/api/modules/room/interface';
+import { ApiResponse } from '@/api/interface';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
     const [rooms, setRooms] = useState<any[]>([]);
     const [createRoomModal, setCreateRoomModal] = useState(false);
+    socket.connect();
+
+    /** 获取房间列表 */
+    const fetchRooms = async () => {
+        // 通知服务端推送房间列表
+        socket.emit(EventPushEnum.ON_GAME_ROOM_LIST);
+    };
 
     useEffect(() => {
-        function updateRooms(res: { list: GameRoomItem[]; total: number }) {
-            const { list } = res;
-            setRooms(list);
+        fetchRooms();
+
+        function onListenerRoomsRefresh(res: ApiResponse<GameRoomItem[]>) {
+            if (res.code === '00000') {
+                setRooms(res.data);
+            }
         }
 
-        // 通知服务端推送房间列表
-        socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
-
-        // 服务端推送过来的房间列表
-        socket.on('updateRoomList', updateRooms);
+        socket.on(EventListenerEnum.PUSH_ROOM_LIST, onListenerRoomsRefresh);
 
         return () => {
-            socket.off('updateRoomList', updateRooms);
+            socket.off(EventListenerEnum.PUSH_ROOM_LIST, onListenerRoomsRefresh);
         };
     }, []);
 
@@ -49,7 +55,7 @@ const Home: React.FC = () => {
                 </div>
                 <div className="grid grid-cols-4 gap-5">
                     {rooms.map((roomItem) => {
-                        return <RoomItem roomItem={roomItem} key={roomItem.id} />;
+                        return <RoomItem roomItem={roomItem} key={roomItem.roomNo} />;
                     })}
                 </div>
             </div>
@@ -59,6 +65,7 @@ const Home: React.FC = () => {
                 onClose={() => {
                     setCreateRoomModal(false);
                 }}
+                updateRooms={fetchRooms}
             />
         </>
     );
