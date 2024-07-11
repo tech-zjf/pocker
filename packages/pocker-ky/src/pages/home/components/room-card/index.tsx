@@ -17,7 +17,6 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
     const { roomItem } = props;
     const navigate = useNavigate();
     const { socket } = useSocket();
-    socket.connect();
     const player = getUserInfo();
 
     const onJoinRoom = () => {

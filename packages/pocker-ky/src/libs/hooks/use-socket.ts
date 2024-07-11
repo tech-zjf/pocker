@@ -27,15 +27,20 @@ export enum EventListenerEnum {
     PUSH_ROOM_INFO = 'refresh-room-info'
 }
 
+let socketInstance: Socket | null = null;
+
 const useSocket = () => {
-    const socket: Socket = io('http://110.40.198.126:8888/game', {
-        extraHeaders: {
-            Authorization: getToken()
-        },
-        autoConnect: false
-    });
+    if (!socketInstance) {
+        socketInstance = io('http://110.40.198.126:8888/game', {
+            extraHeaders: {
+                Authorization: getToken()
+            },
+            autoConnect: false
+        });
+        socketInstance.connect();
+    }
     return {
-        socket
+        socket: socketInstance
     };
 };
 export default useSocket;

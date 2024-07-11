@@ -13,7 +13,6 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
     const { open, onClose, updateRooms } = props;
     const [form] = Form.useForm();
     const { socket } = useSocket();
-    socket.connect();
 
     /** 创建房间 */
     const createRoom = async () => {

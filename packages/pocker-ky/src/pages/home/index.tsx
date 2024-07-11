@@ -10,7 +10,6 @@ const Home: React.FC = () => {
     const { socket } = useSocket();
     const [rooms, setRooms] = useState<any[]>([]);
     const [createRoomModal, setCreateRoomModal] = useState(false);
-    socket.connect();
 
     /** 获取房间列表 */
     const fetchRooms = async () => {
