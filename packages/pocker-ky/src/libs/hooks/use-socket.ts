@@ -1,5 +1,6 @@
 import { Socket, io } from 'socket.io-client';
-import { getToken } from '../storage';
+import { getToken, setToken, setUserInfo } from '../storage';
+import { redirect } from 'react-router-dom';
 
 export enum EventPushEnum {
     /**
@@ -38,6 +39,12 @@ const useSocket = () => {
             autoConnect: false
         });
         socketInstance.connect();
+
+        socketInstance.on('connect_error', (err) => {
+            setToken();
+            setUserInfo();
+            redirect('/login');
+        });
     }
     return {
         socket: socketInstance
