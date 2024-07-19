@@ -59,6 +59,14 @@ export class RoomService {
     async joinRoom(joinRoomDto: JoinRoomDto) {
         // 拿到当前房间
         const room = await this.findOneByRoomNo(joinRoomDto.roomNo);
+        // 拿到当前用户关的房间
+        const players = await this.roomPlayersRepo.findOne({ where: { uid: joinRoomDto.uid, leaveTime: null } });
+        if (players && joinRoomDto.roomNo == players.roomNo) {
+            return '您已经在当前房间内！';
+        }
+        if (players && joinRoomDto.roomNo !== players.roomNo) {
+            throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '您已经在其他游戏房间中！' });
+        }
         // 人数已满
         if (room.readyPlayers === room.maxPlayers) {
             throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '房间人数满了！' });
@@ -66,10 +74,6 @@ export class RoomService {
         // 游戏中状态
         if (room.roomState === RoomStatusEnum.GAMEING) {
             throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '游戏中，禁止加入！' });
-        }
-        // 当前用户是否加入其他房间
-        if (await this.IsJoinRoomByUid(joinRoomDto.uid)) {
-            throw new ApiException({ code: ApiCode.JOIN_ERROR.code, msg: '您已经在其他游戏房间中！' });
         }
         try {
             const createRoomPlayer = await this.roomPlayersRepo.create({
@@ -98,10 +102,7 @@ export class RoomService {
         return await this.roomRepo.findOne({ where: { roomNo: roomNo } });
     }
 
-    async IsJoinRoomByUid(uid: string) {
-        const res = await this.roomPlayersRepo.findOne({ where: { uid, leaveTime: null } });
-        return !!res;
-    }
+    async IsJoinRoomByUid(joinRoomDto: JoinRoomDto) {}
 
     async findOne(id: string) {
         return 'findOne';

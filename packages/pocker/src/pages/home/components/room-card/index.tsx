@@ -25,6 +25,7 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
                 uid: player.uid
             },
             (res: { status: string }) => {
+                console.log('res', res);
                 if (res.status == 'ok') {
                     // 通知服务端推送房间列表
                     socket.emit('getRoomList', { page: 1, pageSize: 10, orderBy: 'createTime', order: 'DESC' });
