@@ -11,7 +11,10 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtService: JwtService, readonly playerService: PlayerService) {}
+    constructor(
+        private readonly jwtService: JwtService,
+        private readonly playerService: PlayerService,
+    ) {}
 
     async signIn(createAuthDto: CreateAuthDto) {
         const { phone, password } = createAuthDto;

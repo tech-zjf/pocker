@@ -30,10 +30,19 @@ export class WebsocketPockerGateway {
         try {
             const { roomNo, uid } = joinRoomDto;
             console.log('玩家加入房间', roomNo, uid);
+            // 判断当前玩家能否加入房间，可以的话创建关联关系
             await this.roomService.joinRoom({ roomNo, uid });
+            // 获取玩家信息
             const player = await this.playerService.findOneByUid(+uid);
+            // 将当前玩家添加到房间
             client.join(roomNo);
+            //向当前房间的其他玩家推送：xxx玩家加入了房间
             this.server.to(roomNo).emit('joined', `${player.nickname} - 加入了房间!`);
+            // TODO
+            // 1. 推送当前房间的玩家列表给当前房间的玩家
+            const players = await this.roomService.findPlayersByRoomNo(roomNo);
+            console.log('players', players);
+            this.server.emit('update_room_players', players);
             return { status: 'ok' };
         } catch (error) {
             client.emit('join_error', error);

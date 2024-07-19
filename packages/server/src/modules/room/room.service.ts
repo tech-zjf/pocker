@@ -11,12 +11,14 @@ import { RoomPlayersEntity } from '@/database/entityes/room-players.entity';
 import { ApiException } from '@/core/filters/api.exception';
 import { ApiCode } from '@/constants/api-code';
 import { JoinRoomDto } from './dto/join-room.dto';
+import { PlayerService } from '../player/player.service';
 
 @Injectable()
 export class RoomService {
     constructor(
         @InjectRepository(RoomsEntity) private readonly roomRepo: Repository<RoomsEntity>,
         @InjectRepository(RoomPlayersEntity) private readonly roomPlayersRepo: Repository<RoomPlayersEntity>,
+        private readonly playerService: PlayerService,
     ) {}
 
     /**
@@ -102,7 +104,19 @@ export class RoomService {
         return await this.roomRepo.findOne({ where: { roomNo: roomNo } });
     }
 
-    async IsJoinRoomByUid(joinRoomDto: JoinRoomDto) {}
+    /**
+     *
+     * @param roomNo 房间号
+     * @returns 房间内的玩家
+     */
+    async findPlayersByRoomNo(roomNo: string) {
+        try {
+            const currentRoomPlayers = await this.roomPlayersRepo.find({ where: { roomNo: roomNo, leaveTime: null } });
+            const fetchPlayersIterator = currentRoomPlayers.map((pItem) => this.playerService.findOneByUid(+pItem.uid));
+            let players = await Promise.all(fetchPlayersIterator);
+            return players;
+        } catch (error) {}
+    }
 
     async findOne(id: string) {
         return 'findOne';
