@@ -1,11 +1,13 @@
 import { Avatar, Button, Space, Spin } from 'antd';
+import { Key } from 'react';
 
 export interface RoomReadingMaskProps {
+    roomInfo: any;
     onStatusChange: (s: string) => void;
 }
 
 const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
-    const { onStatusChange } = props;
+    const { onStatusChange, roomInfo } = props;
 
     return (
         <div className="fixed bg-white w-full h-full overflow-hidden top-0 left-0 flex items-center justify-center">
@@ -17,15 +19,17 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                 <div>
                     <div className="flex items-center justify-between">
                         <h4>已加入玩家：</h4>
-                        <span className=" text-sm text-zjf-bright-blue font-semibold">3 / 8</span>
+                        <span className=" text-sm text-zjf-bright-blue font-semibold">
+                            {roomInfo?.gameRoom?.playerNum || '未知'} / {roomInfo?.gameRoom?.maxPlayers || '未知'}
+                        </span>
                     </div>
                     <div>
-                        {['1', '2', '3'].map((pItem, index) => {
+                        {roomInfo?.players.map((pItem: any, index: number) => {
                             return (
                                 <div className="flex items-center justify-between mt-4" key={index}>
                                     <div className="flex items-center">
-                                        <Avatar size={40} src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3">antd</h4>
+                                        <Avatar size={40} src={pItem?.player?.avatar} />
+                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3">{pItem?.player?.username}</h4>
                                     </div>
                                     <div className="flex items-center">
                                         <span className=" text-sm text-zjf-bright-blue ">已准备</span>

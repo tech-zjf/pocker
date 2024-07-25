@@ -18,7 +18,12 @@ export enum EventPushEnum {
     /**
      * 退出房间
      */
-    ON_LEAVE_ROOM = 'leave-room'
+    ON_LEAVE_ROOM = 'leave-room',
+
+    /**
+     * 通知服务端推送房间信息
+     */
+    ON_GAME_ROOM_INFO = 'game-room-info'
 }
 
 export enum EventListenerEnum {
@@ -27,7 +32,7 @@ export enum EventListenerEnum {
      */
     PUSH_ROOM_LIST = 'refresh-room-list',
     /**
-     * 刷新房间信息推送
+     * 监听服务端推送房间信息
      */
     PUSH_ROOM_INFO = 'refresh-room-info'
 }
