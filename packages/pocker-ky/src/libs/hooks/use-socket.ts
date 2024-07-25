@@ -14,7 +14,11 @@ export enum EventPushEnum {
     /**
      * 获取房间列表
      */
-    ON_GAME_ROOM_LIST = 'game-room-list'
+    ON_GAME_ROOM_LIST = 'game-room-list',
+    /**
+     * 退出房间
+     */
+    ON_LEAVE_ROOM = 'leave-room'
 }
 
 export enum EventListenerEnum {
