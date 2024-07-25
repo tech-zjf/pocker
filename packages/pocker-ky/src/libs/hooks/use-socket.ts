@@ -31,11 +31,6 @@ export enum EventListenerEnum {
 let socketInstance: Socket | null = null;
 
 const useSocket = () => {
-    if (!getToken()) {
-        setUserInfo();
-        redirect('/login');
-        return;
-    }
     if (!socketInstance) {
         socketInstance = io('http://110.40.198.126:8888/game', {
             extraHeaders: {
