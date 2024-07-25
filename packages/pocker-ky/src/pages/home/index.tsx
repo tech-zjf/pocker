@@ -18,9 +18,6 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!socket.connected) {
-            return;
-        }
         fetchRooms();
 
         function onListenerRoomsRefresh(res: ApiResponse<GameRoomItem[]>) {
@@ -34,7 +31,7 @@ const Home: React.FC = () => {
         return () => {
             socket.off(EventListenerEnum.PUSH_ROOM_LIST, onListenerRoomsRefresh);
         };
-    }, [socket.connected]);
+    }, []);
 
     return (
         <>
@@ -46,7 +43,7 @@ const Home: React.FC = () => {
                     <div className="flex items-center">
                         <Button
                             type="primary"
-                            className=" flex items-center"
+                            className="flex items-center"
                             onClick={() => {
                                 setCreateRoomModal(true);
                             }}
@@ -56,9 +53,9 @@ const Home: React.FC = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-4 gap-5">
-                    {rooms.map((roomItem) => {
-                        return <RoomItem roomItem={roomItem} key={roomItem.roomNo} />;
-                    })}
+                    {rooms.map((roomItem) => (
+                        <RoomItem roomItem={roomItem} key={roomItem.roomNo} />
+                    ))}
                 </div>
             </div>
             {/* 创建房间 */}
