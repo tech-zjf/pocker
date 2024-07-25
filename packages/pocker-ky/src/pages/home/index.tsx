@@ -5,6 +5,7 @@ import CreateRoomModal from './components/create-room-modal';
 import RoomItem from './components/room-card';
 import { GameRoomItem } from '@/api/modules/room/interface';
 import { ApiResponse } from '@/api/interface';
+import { ApiCode } from '@/api/constant';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
         fetchRooms();
 
         function onListenerRoomsRefresh(res: ApiResponse<GameRoomItem[]>) {
-            if (res.code === '00000') {
+            if (res.code === ApiCode.SUCCESS) {
                 setRooms(res.data);
             }
         }
