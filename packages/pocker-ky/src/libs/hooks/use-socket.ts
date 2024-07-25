@@ -31,21 +31,19 @@ export enum EventListenerEnum {
 let socketInstance: Socket | null = null;
 
 const useSocket = () => {
-    if (!socketInstance) {
-        socketInstance = io('http://110.40.198.126:8888/game', {
-            extraHeaders: {
-                Authorization: getToken()
-            },
-            autoConnect: false
-        });
-        socketInstance.connect();
+    socketInstance = io('http://110.40.198.126:8888/game', {
+        extraHeaders: {
+            Authorization: getToken()
+        },
+        autoConnect: false
+    });
+    socketInstance.connect();
 
-        socketInstance.on('connect_error', (err) => {
-            setToken();
-            setUserInfo();
-            redirect('/login');
-        });
-    }
+    socketInstance.on('connect_error', (err) => {
+        setToken();
+        setUserInfo();
+        redirect('/login');
+    });
     return {
         socket: socketInstance
     };
