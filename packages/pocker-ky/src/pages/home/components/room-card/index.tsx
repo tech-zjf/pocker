@@ -30,7 +30,9 @@ const RoomItem: React.FC<RoomItemProps> = (props) => {
                 socket.emit(EventPushEnum.ON_GAME_ROOM_LIST);
                 // 跳转到该房间
                 navigate(`/room/${roomItem.roomNo}`);
+                return;
             }
+            message.error(res.msg);
         });
     };
 

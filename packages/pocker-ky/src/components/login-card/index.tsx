@@ -24,7 +24,7 @@ const LoginCard: React.FC<LoginCardProps> = (props) => {
     return (
         <div className={classNames('shadow p-5 rounded-md', className)} style={{ width: 300 }}>
             <h2 className=" text-gray-900 text-xl font-semibold  text-center pb-3 mb-5">登录</h2>
-            <Form name="basic" labelCol={{ span: 24 }} style={{ maxWidth: 280 }} onFinish={onFinish} autoComplete="off" layout="vertical">
+            <Form name="basic" labelCol={{ span: 24 }} initialValues={{ username: 'admin', password: '123456' }} style={{ maxWidth: 280 }} onFinish={onFinish} autoComplete="off" layout="vertical">
                 <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
                     <Input />
                 </Form.Item>
