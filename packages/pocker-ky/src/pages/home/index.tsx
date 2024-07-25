@@ -18,6 +18,9 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
+        if (!socket.connected) {
+            return;
+        }
         fetchRooms();
 
         function onListenerRoomsRefresh(res: ApiResponse<GameRoomItem[]>) {
@@ -31,7 +34,7 @@ const Home: React.FC = () => {
         return () => {
             socket.off(EventListenerEnum.PUSH_ROOM_LIST, onListenerRoomsRefresh);
         };
-    }, []);
+    }, [socket.connected]);
 
     return (
         <>
