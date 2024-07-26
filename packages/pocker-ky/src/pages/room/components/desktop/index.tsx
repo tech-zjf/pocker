@@ -10,10 +10,11 @@ const mock: Player[] = [
         pockers: [
             {
                 type: 1,
-                value: PockerEnum.A
+                value: PockerEnum.A,
+                weight: 1
             },
-            { type: 1, value: PockerEnum.TWO },
-            { type: 4, value: PockerEnum.THREE }
+            { type: 1, value: PockerEnum.TWO, weight: 1 },
+            { type: 4, value: PockerEnum.THREE, weight: 1 }
         ],
         isSpeech: true,
         status: '看牌',
@@ -26,10 +27,11 @@ const mock: Player[] = [
         pockers: [
             {
                 type: 1,
-                value: PockerEnum.A
+                value: PockerEnum.A,
+                weight: 1
             },
-            { type: 1, value: PockerEnum.TWO },
-            { type: 4, value: PockerEnum.THREE }
+            { type: 1, value: PockerEnum.TWO, weight: 1 },
+            { type: 4, value: PockerEnum.THREE, weight: 1 }
         ],
         isSpeech: false,
         status: '未看牌',
@@ -42,10 +44,11 @@ const mock: Player[] = [
         pockers: [
             {
                 type: 1,
-                value: PockerEnum.A
+                value: PockerEnum.A,
+                weight: 1
             },
-            { type: 1, value: PockerEnum.TWO },
-            { type: 4, value: PockerEnum.THREE }
+            { type: 1, value: PockerEnum.TWO, weight: 1 },
+            { type: 4, value: PockerEnum.THREE, weight: 1 }
         ],
         isSpeech: false,
         status: '未看牌',
@@ -58,10 +61,11 @@ const mock: Player[] = [
         pockers: [
             {
                 type: 1,
-                value: PockerEnum.A
+                value: PockerEnum.A,
+                weight: 1
             },
-            { type: 1, value: PockerEnum.TWO },
-            { type: 4, value: PockerEnum.THREE }
+            { type: 1, value: PockerEnum.TWO, weight: 1 },
+            { type: 4, value: PockerEnum.THREE, weight: 1 }
         ],
         isSpeech: false,
         status: '弃牌',
@@ -74,10 +78,11 @@ const mock: Player[] = [
         pockers: [
             {
                 type: 1,
-                value: PockerEnum.A
+                value: PockerEnum.A,
+                weight: 1
             },
-            { type: 1, value: PockerEnum.TWO },
-            { type: 4, value: PockerEnum.THREE }
+            { type: 1, value: PockerEnum.TWO, weight: 1 },
+            { type: 4, value: PockerEnum.THREE, weight: 1 }
         ],
         isSpeech: false,
         status: '弃牌',

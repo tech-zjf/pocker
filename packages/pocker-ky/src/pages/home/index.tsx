@@ -6,6 +6,8 @@ import RoomItem from './components/room-card';
 import { GameRoomItem } from '@/api/modules/room/interface';
 import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
+import { compare, PockersTypeEnum } from '../room/constants';
+import { PockerEnum } from '../room/interface';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -18,9 +20,31 @@ const Home: React.FC = () => {
         socket.emit(EventPushEnum.ON_GAME_ROOM_LIST);
     };
 
+    const testPosckerSize = () => {
+        const p1 = [
+            {
+                type: PockersTypeEnum.HONG_TAO,
+                value: PockerEnum.A,
+                weight: 14
+            },
+            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.TWO, weight: 4 },
+            { type: PockersTypeEnum.MEI_HUA, value: PockerEnum.THREE, weight: 3 }
+        ];
+        const p2 = [
+            {
+                type: PockersTypeEnum.HONG_TAO,
+                value: PockerEnum.A,
+                weight: 14
+            },
+            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.A, weight: 14 },
+            { type: PockersTypeEnum.HONG_TAO, value: PockerEnum.THREE, weight: 3 }
+        ];
+        compare(p1, p2);
+    };
+
     useEffect(() => {
         fetchRooms();
-
+        testPosckerSize();
         function onListenerRoomsRefresh(res: ApiResponse<GameRoomItem[]>) {
             if (res.code === ApiCode.SUCCESS) {
                 setRooms(res.data);

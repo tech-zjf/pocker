@@ -42,5 +42,5 @@ export interface Pocker {
     /**
      *  value 大小
      **/
-    readonly weight?: number;
+    readonly weight: number;
 }

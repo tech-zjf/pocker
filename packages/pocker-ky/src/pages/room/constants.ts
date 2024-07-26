@@ -4,6 +4,8 @@ import MEI_HUA_IMG from '@/assets/images/mei-hua.png';
 import FANG_KUAI_IMG from '@/assets/images/fang-kuai.png';
 import { Player, Pocker } from './interface';
 
+export const _pockers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
 export enum PockersTypeEnum {
     /** 红桃 */
     HONG_TAO = 4,
@@ -28,10 +30,80 @@ export const PockerCardCenterImageMap = new Map([
 //  好有
 //  只有当好有时弃牌才能看到好友的卡牌数据
 
-export function compare(pocker1: Pocker[], pocker2: Pocker[]) {
-    // 是否为对子
-    function _isTwins(p: Pocker) {}
+/** 扑克牌比大小的类型 */
+enum PockerCombinationTypeEnum {
+    AAA = 'AAA',
+    // 三胞胎
+    TRIPLETS = 'triplets',
+    // 双胞胎
+    TWINS = 'twins',
+    // 顺金
+    SHUN_JIN = 'shun_jin',
+    // 金花
+    JIN_HUA = 'jin_hua',
+    // 顺子
+    STRAIGHT = 'straight',
+    // 散牌
+    SAN_PAI = 'san_pai',
+    // 二三五
+    TWO_THREE_FIVE = 'two_three_five'
+}
 
-    // 三张一样的
-    function _isTriplets(p: Pocker) {}
+/** 计算牌的类型 */
+function computePockerType(pocker: Pocker[]): PockerCombinationTypeEnum {
+    const values = pocker.map((p) => p.value);
+    const types = pocker.map((p) => p.type);
+    const weights = pocker.map((p) => p.weight).sort((a, b) => a - b);
+
+    const hasValue = (pVal: string) => pocker.some((p) => p.value === pVal);
+
+    const isAAA = () => values.every((p) => p === 'A');
+
+    const isTriplets = () => new Set(values).size === 1;
+
+    const isTwins = () => new Set(values).size === 2;
+
+    const isJinHua = () => new Set(types).size === 1;
+
+    const isStraight = () => {
+        if (hasValue('A') && !hasValue('K')) {
+            return hasValue('2') && hasValue('3');
+        }
+        return weights[1] === weights[0] + 1 && weights[2] === weights[1] + 1;
+    };
+
+    const isShunJin = () => isJinHua() && isStraight();
+
+    const is235 = () => hasValue('2') && hasValue('3') && hasValue('5');
+
+    if (isAAA()) {
+        return PockerCombinationTypeEnum.AAA;
+    }
+    if (isTriplets()) {
+        return PockerCombinationTypeEnum.TRIPLETS;
+    }
+    if (isTwins()) {
+        return PockerCombinationTypeEnum.TWINS;
+    }
+    if (isShunJin()) {
+        return PockerCombinationTypeEnum.SHUN_JIN;
+    }
+    if (isJinHua()) {
+        return PockerCombinationTypeEnum.JIN_HUA;
+    }
+    if (isStraight()) {
+        return PockerCombinationTypeEnum.STRAIGHT;
+    }
+    if (is235()) {
+        return PockerCombinationTypeEnum.TWO_THREE_FIVE;
+    }
+    return PockerCombinationTypeEnum.SAN_PAI;
+}
+
+export function compare(pocker1: Pocker[], pocker2: Pocker[]) {
+    const pocker1Type = computePockerType(pocker1);
+    const pocker2Type = computePockerType(pocker2);
+    console.log(pocker1Type, pocker2Type);
+    // let pocker1StartIndex = 0;
+    // let pocker2StartIndex = 0;
 }
