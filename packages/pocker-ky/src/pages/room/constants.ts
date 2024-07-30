@@ -79,13 +79,27 @@ function computePockerType(pockers: Pocker[]): PockerCombinationTypeEnum {
     const isStraightFlush = () => isFlush() && isStraight();
     const isTwoThreeFive = () => hasValue('2') && hasValue('3') && hasValue('5');
 
-    if (isAAA()) return PockerCombinationTypeEnum.AAA;
-    if (isTriplets()) return PockerCombinationTypeEnum.TRIPLETS;
-    if (isPair()) return PockerCombinationTypeEnum.PAIR;
-    if (isStraightFlush()) return PockerCombinationTypeEnum.STRAIGHT_FLUSH;
-    if (isFlush()) return PockerCombinationTypeEnum.FLUSH;
-    if (isStraight()) return PockerCombinationTypeEnum.STRAIGHT;
-    if (isTwoThreeFive()) return PockerCombinationTypeEnum.TWO_THREE_FIVE;
+    if (isAAA()) {
+        return PockerCombinationTypeEnum.AAA;
+    }
+    if (isTriplets()) {
+        return PockerCombinationTypeEnum.TRIPLETS;
+    }
+    if (isPair()) {
+        return PockerCombinationTypeEnum.PAIR;
+    }
+    if (isStraightFlush()) {
+        return PockerCombinationTypeEnum.STRAIGHT_FLUSH;
+    }
+    if (isFlush()) {
+        return PockerCombinationTypeEnum.FLUSH;
+    }
+    if (isStraight()) {
+        return PockerCombinationTypeEnum.STRAIGHT;
+    }
+    if (isTwoThreeFive()) {
+        return PockerCombinationTypeEnum.TWO_THREE_FIVE;
+    }
     return PockerCombinationTypeEnum.HIGH_CARD;
 }
 
