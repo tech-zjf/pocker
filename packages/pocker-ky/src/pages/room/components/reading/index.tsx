@@ -1,5 +1,4 @@
 import { Avatar, Button, Space, Spin } from 'antd';
-import { Key } from 'react';
 
 export interface RoomReadingMaskProps {
     roomInfo: any;

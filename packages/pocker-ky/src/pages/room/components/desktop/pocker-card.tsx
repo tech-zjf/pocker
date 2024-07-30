@@ -1,9 +1,9 @@
 import { BasicComponentProps } from '@/components/interface';
-import { Player } from '../../interface';
 import BACK_IMG from '@/assets/images/pocker-back.png';
-import { PockerCardCenterImageMap } from '../../constants';
 import { Space } from 'antd';
 import { Fragment } from 'react';
+import { PockerCardCenterImageMap } from '@/constants/pocker';
+import { Player } from '@/api/modules/user/interface';
 
 interface PockerCardProps extends BasicComponentProps {
     items: Player['pockers'];

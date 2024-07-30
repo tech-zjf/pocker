@@ -1,7 +1,7 @@
 import { BasicComponentProps } from '@/components/interface';
-import { Player } from '../../interface';
 import { Button, Space } from 'antd';
 import PockerCard from './pocker-card';
+import { Player } from '@/api/modules/user/interface';
 
 interface DesktopMineProps extends BasicComponentProps {
     item: Player;

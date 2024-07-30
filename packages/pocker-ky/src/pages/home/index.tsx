@@ -6,8 +6,8 @@ import RoomItem from './components/room-card';
 import { GameRoomItem } from '@/api/modules/room/interface';
 import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
-import { compare, PockersTypeEnum } from '../room/constants';
-import { PockerEnum } from '../room/interface';
+import { PockerEnum, PockersTypeEnum } from '@/constants/pocker';
+import { compare } from '@/libs/tools/pocker';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();

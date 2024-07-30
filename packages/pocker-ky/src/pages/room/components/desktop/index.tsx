@@ -1,6 +1,7 @@
-import { Player, PockerEnum } from '../../interface';
+import { Player } from '@/api/modules/user/interface';
 import DesktopMine from './mine';
 import DesktopOtherPlayerItem from './other-player-item';
+import { PockerEnum } from '@/constants/pocker';
 
 const mock: Player[] = [
     {

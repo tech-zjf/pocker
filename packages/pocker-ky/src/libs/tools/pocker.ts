@@ -1,64 +1,19 @@
-import HONG_TAO_IMG from '@/assets/images/hong-tao.png';
-import HEI_TAO_IMG from '@/assets/images/hei-tao.png';
-import MEI_HUA_IMG from '@/assets/images/mei-hua.png';
-import FANG_KUAI_IMG from '@/assets/images/fang-kuai.png';
-import { Pocker } from './interface';
+import { default_pockers, defaultPockerCombinationSort, Pocker, PockerCombinationTypeEnum, PockerEnum, PockersTypeEnum } from '@/constants/pocker';
 
-export const _pockers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-
-export enum PockersTypeEnum {
-    /** 红桃 */
-    HONG_TAO = 4,
-    /** 黑桃 */
-    HEI_TAO = 3,
-    /** 梅花 */
-    MEI_HUA = 2,
-    /** 方块 */
-    FANG_KUAI = 1
+export function createPocker(value: PockerEnum, type: PockersTypeEnum): Pocker {
+    return {
+        value,
+        type,
+        weight: default_pockers.findIndex((item) => item === value) + 2
+    };
 }
 
-export const PockerCardCenterImageMap = new Map([
-    [PockersTypeEnum.HONG_TAO, HONG_TAO_IMG],
-    [PockersTypeEnum.HEI_TAO, HEI_TAO_IMG],
-    [PockersTypeEnum.MEI_HUA, MEI_HUA_IMG],
-    [PockersTypeEnum.FANG_KUAI, FANG_KUAI_IMG]
-]);
-
-/** 扑克牌比大小的类型 */
-enum PockerCombinationTypeEnum {
-    AAA = 'AAA',
-    // 三胞胎
-    TRIPLETS = 'triplets',
-    // 顺金
-    STRAIGHT_FLUSH = 'straight_flush',
-    // 金花
-    FLUSH = 'flush',
-    // 顺子
-    STRAIGHT = 'straight',
-    // 双胞胎
-    PAIR = 'pair',
-    // 散牌
-    HIGH_CARD = 'high_card',
-    // 二三五
-    TWO_THREE_FIVE = 'two_three_five'
-}
-
-const defaultPockerCombinationSort = [
-    PockerCombinationTypeEnum.TWO_THREE_FIVE,
-    PockerCombinationTypeEnum.HIGH_CARD,
-    PockerCombinationTypeEnum.PAIR,
-    PockerCombinationTypeEnum.STRAIGHT,
-    PockerCombinationTypeEnum.FLUSH,
-    PockerCombinationTypeEnum.STRAIGHT_FLUSH,
-    PockerCombinationTypeEnum.TRIPLETS,
-    PockerCombinationTypeEnum.AAA
-];
-
+/** 根据牌的类型 获取当前类型的大小索引 */
 function findCombinationRank(combination: PockerCombinationTypeEnum): number {
     return defaultPockerCombinationSort.indexOf(combination);
 }
 
-/** 计算牌的类型 */
+/** 计算牌的大小 */
 function computePockerType(pockers: Pocker[]): PockerCombinationTypeEnum {
     const values = pockers.map((p) => p.value);
     const suits = pockers.map((p) => p.type);
@@ -103,6 +58,7 @@ function computePockerType(pockers: Pocker[]): PockerCombinationTypeEnum {
     return PockerCombinationTypeEnum.HIGH_CARD;
 }
 
+/** 比较相同类型的牌  */
 function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[]) {
     const sortPockers1 = pockers1.sort((a, b) => b.weight - a.weight);
     const sortPockers2 = pockers2.sort((a, b) => b.weight - a.weight);

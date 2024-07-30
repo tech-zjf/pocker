@@ -1,6 +1,6 @@
 import { BasicComponentProps } from '@/components/interface';
-import { Player } from '../../interface';
 import PockerCard from './pocker-card';
+import { Player } from '@/api/modules/user/interface';
 
 interface OtherPlayerItemProps extends BasicComponentProps {
     item: Player;
