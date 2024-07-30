@@ -81,7 +81,7 @@ function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[]) {
 export function compare(pockers1: Pocker[], pockers2: Pocker[]) {
     const pocker1Type = computePockerType(pockers1);
     const pocker2Type = computePockerType(pockers2);
-
+    console.log('卡牌类型：', pocker1Type, pocker2Type);
     if (pocker1Type === pocker2Type) {
         return compareSameTypePockers(pockers1, pockers2);
     } else {

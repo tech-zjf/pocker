@@ -7,7 +7,7 @@ import { GameRoomItem } from '@/api/modules/room/interface';
 import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
 import { PockerEnum, PockersTypeEnum } from '@/constants/pocker';
-import { compare } from '@/libs/tools/pocker';
+import { compare, createPocker } from '@/libs/tools/pocker';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -21,24 +21,9 @@ const Home: React.FC = () => {
     };
 
     const testPosckerSize = () => {
-        const p1 = [
-            {
-                type: PockersTypeEnum.HONG_TAO,
-                value: PockerEnum.FIVE,
-                weight: 5
-            },
-            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.FIVE, weight: 5 },
-            { type: PockersTypeEnum.MEI_HUA, value: PockerEnum.THREE, weight: 3 }
-        ];
-        const p2 = [
-            {
-                type: PockersTypeEnum.HONG_TAO,
-                value: PockerEnum.A,
-                weight: 14
-            },
-            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.A, weight: 14 },
-            { type: PockersTypeEnum.MEI_HUA, value: PockerEnum.A, weight: 14 }
-        ];
+        const p1 = [createPocker(PockerEnum.A, PockersTypeEnum.HONG_TAO), createPocker(PockerEnum.TWO, PockersTypeEnum.HONG_TAO), createPocker(PockerEnum.THREE, PockersTypeEnum.HONG_TAO)];
+        const p2 = [createPocker(PockerEnum.A, PockersTypeEnum.HEI_TAO), createPocker(PockerEnum.A, PockersTypeEnum.FANG_KUAI), createPocker(PockerEnum.A, PockersTypeEnum.MEI_HUA)];
+        console.log('卡牌', p1, p2);
         const result = compare(p1, p2);
         console.log(result);
     };
