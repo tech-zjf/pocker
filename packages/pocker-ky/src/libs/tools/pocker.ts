@@ -59,22 +59,25 @@ function computePockerType(pockers: Pocker[]): PockerCombinationTypeEnum {
 }
 
 /** 比较相同类型的牌  */
-function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[]) {
+function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[], type: PockerCombinationTypeEnum) {
     const sortPockers1 = pockers1.sort((a, b) => b.weight - a.weight);
     const sortPockers2 = pockers2.sort((a, b) => b.weight - a.weight);
-    let result = 0;
-    let p1Index = 0;
-    let p2Index = 0;
-    const p1 = sortPockers1[p1Index];
-    const p2 = sortPockers2[p2Index];
-
-    // 牌一样 比较花色
-    if (p1.weight === p2.weight) {
-        result = p1.type > p2.type ? 0 : 1;
-    } else {
-        result = p1.weight > p2.weight ? 0 : 1;
+    let i;
+    for (i = 0; i < 3; i++) {
+        const p1 = sortPockers1[i];
+        const p2 = sortPockers2[i];
+        if (p1.value > p2.value) {
+            return 0;
+        }
+        if (p1.value < p2.value) {
+            return 1;
+        }
     }
-    return result;
+    if (i === 3 && [PockerCombinationTypeEnum.STRAIGHT_FLUSH, PockerCombinationTypeEnum.FLUSH].includes(type)) {
+        return sortPockers1[0].type > sortPockers2[1].type ? 0 : 1;
+    } else {
+        return '谁开牌谁输！';
+    }
 }
 
 /** 比大小 */
@@ -83,7 +86,7 @@ export function compare(pockers1: Pocker[], pockers2: Pocker[]) {
     const pocker2Type = computePockerType(pockers2);
     console.log('卡牌类型：', pocker1Type, pocker2Type);
     if (pocker1Type === pocker2Type) {
-        return compareSameTypePockers(pockers1, pockers2);
+        return compareSameTypePockers(pockers1, pockers2, pocker1Type);
     } else {
         const pocker1Index = findCombinationRank(pocker1Type);
         const pocker2Index = findCombinationRank(pocker2Type);
