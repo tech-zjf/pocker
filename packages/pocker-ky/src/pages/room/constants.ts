@@ -2,7 +2,7 @@ import HONG_TAO_IMG from '@/assets/images/hong-tao.png';
 import HEI_TAO_IMG from '@/assets/images/hei-tao.png';
 import MEI_HUA_IMG from '@/assets/images/mei-hua.png';
 import FANG_KUAI_IMG from '@/assets/images/fang-kuai.png';
-import { Player, Pocker } from './interface';
+import { Pocker } from './interface';
 
 export const _pockers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 

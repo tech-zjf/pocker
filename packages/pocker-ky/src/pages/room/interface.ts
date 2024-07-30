@@ -34,13 +34,7 @@ export enum PockerEnum {
 }
 
 export interface Pocker {
-    /**
-     * 红黑梅方
-     */
     readonly type: PockersTypeEnum;
-    readonly value: PockerEnum;
-    /**
-     *  value 大小
-     **/
-    readonly weight: number;
+    readonly value: PockerEnum; // '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'
+    readonly weight: number; // '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14' 和 value 对应， 比大小用
 }
