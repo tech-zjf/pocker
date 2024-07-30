@@ -73,6 +73,7 @@ function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[], type: Po
             return 1;
         }
     }
+    return '谁开牌谁输！'; // 不比花色 牌相同，谁开牌谁输
     if (i === 3 && [PockerCombinationTypeEnum.STRAIGHT_FLUSH, PockerCombinationTypeEnum.FLUSH].includes(type)) {
         return sortPockers1[0].type > sortPockers2[1].type ? 0 : 1;
     } else {
