@@ -107,6 +107,7 @@ function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[]) {
     return result;
 }
 
+/** 比大小 */
 export function compare(pockers1: Pocker[], pockers2: Pocker[]) {
     const pocker1Type = computePockerType(pockers1);
     const pocker2Type = computePockerType(pockers2);

@@ -24,10 +24,10 @@ const Home: React.FC = () => {
         const p1 = [
             {
                 type: PockersTypeEnum.HONG_TAO,
-                value: PockerEnum.A,
-                weight: 14
+                value: PockerEnum.FIVE,
+                weight: 5
             },
-            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.TWO, weight: 4 },
+            { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.FIVE, weight: 5 },
             { type: PockersTypeEnum.MEI_HUA, value: PockerEnum.THREE, weight: 3 }
         ];
         const p2 = [
@@ -37,9 +37,10 @@ const Home: React.FC = () => {
                 weight: 14
             },
             { type: PockersTypeEnum.HEI_TAO, value: PockerEnum.A, weight: 14 },
-            { type: PockersTypeEnum.HONG_TAO, value: PockerEnum.THREE, weight: 3 }
+            { type: PockersTypeEnum.MEI_HUA, value: PockerEnum.A, weight: 14 }
         ];
-        compare(p1, p2);
+        const result = compare(p1, p2);
+        console.log(result);
     };
 
     useEffect(() => {
