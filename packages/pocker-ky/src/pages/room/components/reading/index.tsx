@@ -35,8 +35,8 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                                 <div className="flex items-center justify-between mt-4" key={index}>
                                     <div className="flex items-center">
                                         <Avatar size={40} src={pItem?.player?.avatar} />
-                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3">
-                                            {pItem?.player?.username} {roomInfo?.gameRoom?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white">房主</span>}
+                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3 flex items-center">
+                                            {pItem?.player?.username} {roomInfo?.gameRoom?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white ml-4">房主</span>}
                                         </h4>
                                     </div>
                                     <div className="flex items-center">
