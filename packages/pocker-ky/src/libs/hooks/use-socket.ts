@@ -1,6 +1,7 @@
 import { Socket, io } from 'socket.io-client';
 import { getToken, setToken, setUserInfo } from '../storage';
 import { redirect } from 'react-router-dom';
+import { Error_Code, SOCKET_CONNECT_ERROR_CODE } from '@/constants/socket-code';
 
 export enum EventPushEnum {
     /**
@@ -39,6 +40,12 @@ export enum EventListenerEnum {
 
 let socketInstance: Socket | null = null;
 
+export function login() {
+    setToken();
+    setUserInfo();
+    redirect('/login');
+}
+
 const useSocket = () => {
     if (!socketInstance || !socketInstance.connected) {
         socketInstance = io('http://110.40.198.126:8888/game', {
@@ -49,10 +56,14 @@ const useSocket = () => {
         });
         socketInstance.connect();
 
-        socketInstance.on('connect_error', (err) => {
-            setToken();
-            setUserInfo();
-            redirect('/login');
+        socketInstance.on('connect_error', (err: any) => {
+            const { data, message } = err;
+            console.log('connect_error：', message, data);
+            const code: Error_Code = data?.code;
+            if (SOCKET_CONNECT_ERROR_CODE[code]) {
+                message.error(SOCKET_CONNECT_ERROR_CODE[code]);
+            }
+            login();
         });
     }
     return {
