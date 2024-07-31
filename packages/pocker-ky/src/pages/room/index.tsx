@@ -34,9 +34,7 @@ const Home: React.FC = () => {
     };
 
     const fetchRoomInfo = async () => {
-        socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, { roomNo: roomNo, userId: useInfo.userId }, (res: ApiResponse<unknown>) => {
-            console.log('客户端推送 - 获取房间信息', res);
-        });
+        socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, { roomNo: roomNo, userId: useInfo.userId });
     };
 
     useEffect(() => {

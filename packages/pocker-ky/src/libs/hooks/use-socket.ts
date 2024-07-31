@@ -64,6 +64,8 @@ const useSocket = () => {
             const code: ApiCode = data?.code;
             if (socket_connect_error_code.has(code)) {
                 message.error(socket_connect_error_code.get(code));
+            } else {
+                message.error('socket连接错误！');
             }
             if (code === ApiCode.TOKEN_INVALID) {
                 login();
