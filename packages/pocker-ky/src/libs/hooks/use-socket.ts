@@ -1,7 +1,9 @@
 import { Socket, io } from 'socket.io-client';
 import { getToken, setToken, setUserInfo } from '../storage';
 import { redirect } from 'react-router-dom';
-import { Error_Code, SOCKET_CONNECT_ERROR_CODE } from '@/constants/socket-code';
+import { ApiResponse } from '@/api/interface';
+import { message } from 'antd';
+import { ApiCode, socket_connect_error_code } from '@/api/constant';
 
 export enum EventPushEnum {
     /**
@@ -59,11 +61,19 @@ const useSocket = () => {
         socketInstance.on('connect_error', (err: any) => {
             const { data, message } = err;
             console.log('connect_error：', message, data);
-            const code: Error_Code = data?.code;
-            if (SOCKET_CONNECT_ERROR_CODE[code]) {
-                message.error(SOCKET_CONNECT_ERROR_CODE[code]);
+            const code: ApiCode = data?.code;
+            if (socket_connect_error_code.has(code)) {
+                message.error(socket_connect_error_code.get(code));
             }
-            login();
+            if (code === ApiCode.TOKEN_INVALID) {
+                login();
+            }
+        });
+
+        socketInstance.on('socket_error', (err: ApiResponse<unknown>) => {
+            const { code } = err;
+            console.log('socket_error：', err);
+            message.error(socket_connect_error_code.get(code));
         });
     }
     return {
