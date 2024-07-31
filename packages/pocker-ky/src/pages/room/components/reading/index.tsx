@@ -1,4 +1,6 @@
+import { getUserInfo } from '@/libs/storage';
 import { Avatar, Button, Space, Spin } from 'antd';
+import { useMemo } from 'react';
 
 export interface RoomReadingMaskProps {
     roomInfo: any;
@@ -7,6 +9,11 @@ export interface RoomReadingMaskProps {
 
 const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
     const { onStatusChange, roomInfo } = props;
+    const playerInfo = getUserInfo();
+
+    const isMaster = useMemo(() => {
+        return roomInfo?.gameRoom?.createId == playerInfo?.userId;
+    }, [roomInfo, playerInfo]);
 
     return (
         <div className="fixed bg-white w-full h-full overflow-hidden top-0 left-0 flex items-center justify-center">
@@ -28,7 +35,9 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                                 <div className="flex items-center justify-between mt-4" key={index}>
                                     <div className="flex items-center">
                                         <Avatar size={40} src={pItem?.player?.avatar} />
-                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3">{pItem?.player?.username}</h4>
+                                        <h4 className=" text-sm text-gray-900 font-semibold ml-3">
+                                            {pItem?.player?.username} {roomInfo?.gameRoom?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white">房主</span>}
+                                        </h4>
                                     </div>
                                     <div className="flex items-center">
                                         <span className=" text-sm text-zjf-bright-blue ">已准备</span>
@@ -48,14 +57,17 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                         退出房间
                     </Button>
                     {/* 权限： 房主 */}
-                    <Button
-                        type="primary"
-                        onClick={() => {
-                            onStatusChange('开始游戏');
-                        }}
-                    >
-                        开始游戏
-                    </Button>
+                    {isMaster && (
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                console.log('isMaster', isMaster);
+                                onStatusChange('开始游戏');
+                            }}
+                        >
+                            开始游戏
+                        </Button>
+                    )}
                 </Space>
             </div>
         </div>
