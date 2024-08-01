@@ -19,9 +19,28 @@ const Home: React.FC = () => {
     const onStatusChange = (status: string) => {
         if (status === '退出') {
             onLeaveRoom();
+            return;
+        }
+        if (status === '开始游戏') {
+            onStartGame();
         }
     };
 
+    /** 开始游戏 */
+    const onStartGame = () => {
+        console.log('roomInfo', roomInfo);
+        socket.emit(EventPushEnum.ON_START_GAME, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
+            console.log('开始游戏：', res);
+        });
+    };
+
+    const fetchRoomPlayers = () => {
+        socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
+            console.log('开始游戏：', res);
+        });
+    };
+
+    /** 退出房间 */
     const onLeaveRoom = () => {
         socket.emit(EventPushEnum.ON_LEAVE_ROOM, { roomNo: roomNo, userId: useInfo.userId }, (res: ApiResponse<unknown>) => {
             if (res.code === ApiCode.SUCCESS) {
@@ -33,6 +52,7 @@ const Home: React.FC = () => {
         });
     };
 
+    /** 获取房间信息 */
     const fetchRoomInfo = async () => {
         socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, { roomNo: roomNo, userId: useInfo.userId });
     };
@@ -40,6 +60,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         fetchRoomInfo();
 
+        /** 服务端推送房间信息 - 回调 */
         function updateRoomInfo(res: ApiResponse<unknown>) {
             console.log('服务端推送 - 房间信息', res);
             if (res.code === ApiCode.SUCCESS) {
@@ -49,11 +70,19 @@ const Home: React.FC = () => {
             message.error(res.msg);
         }
 
+        /** 服务端推送玩家信息 - 回调 */
+        function updateRoomPlayers(res: ApiResponse<unknown>) {
+            console.log('服务端推送 - 玩家信息', res);
+            if (res.code === ApiCode.SUCCESS) {
+            }
+        }
+
         // 服务端推送过来的房间列表
         socket.on(EventListenerEnum.PUSH_ROOM_INFO, updateRoomInfo);
-
+        socket.on(EventListenerEnum.PUSH_ROOM_PLAYER, updateRoomPlayers);
         return () => {
             socket.off(EventListenerEnum.PUSH_ROOM_INFO, updateRoomInfo);
+            socket.off(EventListenerEnum.PUSH_ROOM_PLAYER, updateRoomPlayers);
         };
     }, []);
 

@@ -26,7 +26,15 @@ export enum EventPushEnum {
     /**
      * 通知服务端推送房间信息
      */
-    ON_GAME_ROOM_INFO = 'game-room-info'
+    ON_GAME_ROOM_INFO = 'game-room-info',
+    /**
+     * 开始游戏
+     */
+    ON_START_GAME = 'start-game',
+    /**
+     * 获取房间玩家信息
+     */
+    ON_GAME_ROOM_PLAYERS = 'game-room-players'
 }
 
 export enum EventListenerEnum {
@@ -37,7 +45,11 @@ export enum EventListenerEnum {
     /**
      * 监听服务端推送房间信息
      */
-    PUSH_ROOM_INFO = 'refresh-room-info'
+    PUSH_ROOM_INFO = 'refresh-room-info',
+    /**
+     * 房间卡牌信息
+     */
+    PUSH_ROOM_PLAYER = 'refresh-room-player'
 }
 
 let socketInstance: Socket | null = null;
