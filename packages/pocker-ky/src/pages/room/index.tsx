@@ -28,16 +28,19 @@ const Home: React.FC = () => {
 
     /** 开始游戏 */
     const onStartGame = () => {
+        // TODO: 各种校验
         console.log('roomInfo', roomInfo);
         socket.emit(EventPushEnum.ON_START_GAME, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
             console.log('开始游戏：', res);
+            if (res.code === ApiCode.SUCCESS) {
+                fetchRoomPlayers();
+            }
         });
     };
 
+    /** 通知服务端推送 - 玩家信息 */
     const fetchRoomPlayers = () => {
-        socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
-            console.log('开始游戏：', res);
-        });
+        socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {});
     };
 
     /** 退出房间 */
