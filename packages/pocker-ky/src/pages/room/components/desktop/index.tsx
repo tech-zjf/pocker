@@ -91,7 +91,12 @@ const mock: Player[] = [
     }
 ];
 
-const PockerDesktop: React.FC = () => {
+interface PockerDesktopProps {
+    onStatusChange: (s: string) => void;
+}
+
+const PockerDesktop: React.FC<PockerDesktopProps> = (props) => {
+    const { onStatusChange } = props;
     const otherPlayers = mock.slice(1, 5);
     const mine = mock[0];
     return (
@@ -103,7 +108,7 @@ const PockerDesktop: React.FC = () => {
             </div>
             <div className="flex-1">中间区域</div>
             <div className="flex-1">
-                <DesktopMine item={mine} />
+                <DesktopMine onStatusChange={onStatusChange} item={mine} />
             </div>
         </div>
     );

@@ -35,7 +35,10 @@ const Home: React.FC = () => {
             return;
         }
         if (players?.every((pItem) => pItem.playerGames.roomStatus !== PlayerRoomStatusEnum.READING)) {
-            const notReadPlatersStr = players.filter((pItem) => pItem.playerGames.roomStatus !== PlayerRoomStatusEnum.READING).join('，');
+            const notReadPlatersStr = players
+                .filter((pItem) => pItem.playerGames.roomStatus !== PlayerRoomStatusEnum.READING)
+                .map((pItem) => pItem.player.username)
+                .join('，');
             message.error(`${notReadPlatersStr} 不是准备状态！`);
             return;
         }
@@ -70,7 +73,6 @@ const Home: React.FC = () => {
 
     /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
     const showLoading = useMemo(() => {
-        console.log(roomInfo, players);
         if (!roomInfo || !players) {
             return false;
         }
@@ -83,8 +85,11 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchRoomInfo();
-
+        if (showLoading) {
+            fetchRoomInfo();
+        } else {
+            fetchRoomPlayers();
+        }
         /** 服务端推送房间信息 - 回调 */
         function updateRoomInfo(res: ApiResponse<RoomResponse>) {
             console.log('服务端推送 - 房间信息', res);
@@ -95,7 +100,6 @@ const Home: React.FC = () => {
             }
             message.error(res.msg);
         }
-
         /** 服务端推送玩家信息 - 回调 */
         function updateRoomPlayers(res: ApiResponse<RoomResponse>) {
             console.log('服务端推送 - 玩家信息', res);
@@ -106,7 +110,6 @@ const Home: React.FC = () => {
             }
             message.error(res.msg);
         }
-
         // 服务端推送过来的房间列表
         socket.on(EventListenerEnum.PUSH_ROOM_INFO, updateRoomInfo);
         socket.on(EventListenerEnum.PUSH_ROOM_PLAYER, updateRoomPlayers);
@@ -114,11 +117,11 @@ const Home: React.FC = () => {
             socket.off(EventListenerEnum.PUSH_ROOM_INFO, updateRoomInfo);
             socket.off(EventListenerEnum.PUSH_ROOM_PLAYER, updateRoomPlayers);
         };
-    }, []);
+    }, [showLoading]);
 
     return (
         <div className="h-full ">
-            <PockerDesktop />
+            <PockerDesktop onStatusChange={onStatusChange} />
             {roomInfo && <p>{showLoading}</p>}
             {/* 未开始游戏，准备中状态展示以下蒙层 */}
 
