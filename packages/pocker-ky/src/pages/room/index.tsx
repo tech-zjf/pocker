@@ -124,7 +124,6 @@ const Home: React.FC = () => {
             <PockerDesktop onStatusChange={onStatusChange} />
             {roomInfo && <p>{showLoading}</p>}
             {/* 未开始游戏，准备中状态展示以下蒙层 */}
-
             {showLoading && roomInfo && <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />}
         </div>
     );

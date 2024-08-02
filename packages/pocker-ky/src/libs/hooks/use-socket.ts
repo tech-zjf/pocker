@@ -34,7 +34,11 @@ export enum EventPushEnum {
     /**
      * 获取房间玩家信息
      */
-    ON_GAME_ROOM_PLAYERS = 'game-room-players'
+    ON_GAME_ROOM_PLAYERS = 'game-room-players',
+    /**
+     * 断开连接
+     */
+    PLAYER_DISCONNECT = 'plaver-disconnect'
 }
 
 export enum EventListenerEnum {
