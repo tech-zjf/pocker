@@ -1,18 +1,20 @@
 import { getUserInfo } from '@/libs/storage';
 import { Avatar, Button, Space, Spin } from 'antd';
 import { useMemo } from 'react';
+import { RoomInfoResponse, RoomPlayerResponse } from '../../interface';
 
 export interface RoomReadingMaskProps {
-    roomInfo: any;
+    roomInfo: RoomInfoResponse;
+    players: RoomPlayerResponse[];
     onStatusChange: (s: string) => void;
 }
 
 const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
-    const { onStatusChange, roomInfo } = props;
+    const { onStatusChange, roomInfo, players } = props;
     const playerInfo = getUserInfo();
 
     const isMaster = useMemo(() => {
-        return roomInfo?.gameRoom?.createId == playerInfo?.userId;
+        return roomInfo.createId === playerInfo?.userId.toString();
     }, [roomInfo, playerInfo]);
 
     return (
@@ -26,17 +28,17 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                     <div className="flex items-center justify-between">
                         <h4>已加入玩家：</h4>
                         <span className=" text-sm text-zjf-bright-blue font-semibold">
-                            {roomInfo?.gameRoom?.playerNum || '未知'} / {roomInfo?.gameRoom?.maxPlayers || '未知'}
+                            {roomInfo?.playerNum || '未知'} / {roomInfo?.maxPlayers || '未知'}
                         </span>
                     </div>
                     <div>
-                        {roomInfo?.players.map((pItem: any, index: number) => {
+                        {players.map((pItem: any, index: number) => {
                             return (
                                 <div className="flex items-center justify-between mt-4" key={index}>
                                     <div className="flex items-center">
                                         <Avatar size={40} src={pItem?.player?.avatar} />
                                         <h4 className=" text-sm text-gray-900 font-semibold ml-3 flex items-center">
-                                            {pItem?.player?.username} {roomInfo?.gameRoom?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white ml-4">房主</span>}
+                                            {pItem?.player?.username} {roomInfo?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white ml-4">房主</span>}
                                         </h4>
                                     </div>
                                     <div className="flex items-center">

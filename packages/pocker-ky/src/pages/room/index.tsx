@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PockerDesktop from './components/desktop';
 import RoomReadingMask from './components/reading';
 import useSocket, { EventListenerEnum, EventPushEnum } from '@/libs/hooks/use-socket';
@@ -7,13 +7,15 @@ import { getUserInfo } from '@/libs/storage';
 import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
 import { message } from 'antd';
+import { PlayerRoomStatusEnum, RoomInfoResponse, RoomPlayerResponse, RoomResponse, RoomStateEnum } from './interface';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
     const { roomNo } = useParams();
     const useInfo = getUserInfo();
     const navigate = useNavigate();
-    const [roomInfo, setRoomInfo] = useState<any>();
+    const [roomInfo, setRoomInfo] = useState<RoomInfoResponse | null>(null);
+    const [players, setPlayers] = useState<RoomPlayerResponse[]>([]);
     const [currentRoomPlayers, setCurrentRoomPlayers] = useState([]);
 
     const onStatusChange = (status: string) => {
@@ -28,8 +30,15 @@ const Home: React.FC = () => {
 
     /** 开始游戏 */
     const onStartGame = () => {
-        // TODO: 各种校验
-        console.log('roomInfo', roomInfo);
+        if (roomInfo?.roomState === RoomStateEnum.GAMEING) {
+            message.error('当前房间已经是游戏中！');
+            return;
+        }
+        if (players?.every((pItem) => pItem.playerGames.roomStatus !== PlayerRoomStatusEnum.READING)) {
+            const notReadPlatersStr = players.filter((pItem) => pItem.playerGames.roomStatus !== PlayerRoomStatusEnum.READING).join('，');
+            message.error(`${notReadPlatersStr} 不是准备状态！`);
+            return;
+        }
         socket.emit(EventPushEnum.ON_START_GAME, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
             console.log('开始游戏：', res);
             if (res.code === ApiCode.SUCCESS) {
@@ -40,7 +49,11 @@ const Home: React.FC = () => {
 
     /** 通知服务端推送 - 玩家信息 */
     const fetchRoomPlayers = () => {
-        socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {});
+        socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
+            if (res.code !== ApiCode.SUCCESS) {
+                message.error(res.msg);
+            }
+        });
     };
 
     /** 退出房间 */
@@ -55,6 +68,15 @@ const Home: React.FC = () => {
         });
     };
 
+    /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
+    const showLoading = useMemo(() => {
+        console.log(roomInfo, players);
+        if (!roomInfo || !players) {
+            return false;
+        }
+        return roomInfo?.roomState == RoomStateEnum.WAIT_JOIN && players?.every((p) => p?.playerGames?.roomStatus !== PlayerRoomStatusEnum.GAMEING);
+    }, [roomInfo, players]);
+
     /** 获取房间信息 */
     const fetchRoomInfo = async () => {
         socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, { roomNo: roomNo, userId: useInfo.userId });
@@ -64,20 +86,25 @@ const Home: React.FC = () => {
         fetchRoomInfo();
 
         /** 服务端推送房间信息 - 回调 */
-        function updateRoomInfo(res: ApiResponse<unknown>) {
+        function updateRoomInfo(res: ApiResponse<RoomResponse>) {
             console.log('服务端推送 - 房间信息', res);
             if (res.code === ApiCode.SUCCESS) {
-                setRoomInfo(res.data);
+                setRoomInfo(res.data.gameRoom);
+                setPlayers(res.data.players);
                 return;
             }
             message.error(res.msg);
         }
 
         /** 服务端推送玩家信息 - 回调 */
-        function updateRoomPlayers(res: ApiResponse<unknown>) {
+        function updateRoomPlayers(res: ApiResponse<RoomResponse>) {
             console.log('服务端推送 - 玩家信息', res);
             if (res.code === ApiCode.SUCCESS) {
+                setRoomInfo(res.data.gameRoom);
+                setPlayers(res.data.players);
+                return;
             }
+            message.error(res.msg);
         }
 
         // 服务端推送过来的房间列表
@@ -92,8 +119,10 @@ const Home: React.FC = () => {
     return (
         <div className="h-full ">
             <PockerDesktop />
+            {roomInfo && <p>{showLoading}</p>}
             {/* 未开始游戏，准备中状态展示以下蒙层 */}
-            {!!roomInfo?.players?.length && <RoomReadingMask roomInfo={roomInfo} onStatusChange={onStatusChange} />}
+
+            {showLoading && roomInfo && <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />}
         </div>
     );
 };
