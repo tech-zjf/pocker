@@ -1,4 +1,11 @@
-import { default_pockers, defaultPockerCombinationSort, Pocker, PockerCombinationTypeEnum, PockerEnum, PockersTypeEnum } from '@/constants/pocker';
+import {
+    default_pockers,
+    defaultPockerCombinationSort,
+    Pocker,
+    PockerCombinationTypeEnum,
+    PockerEnum,
+    PockersTypeEnum
+} from '@/constants/pocker';
 
 export function createPocker(value: PockerEnum, type: PockersTypeEnum): Pocker {
     return {
@@ -91,7 +98,10 @@ export function compare(pockers1: Pocker[], pockers2: Pocker[]) {
     } else {
         const pocker1Index = findCombinationRank(pocker1Type);
         const pocker2Index = findCombinationRank(pocker2Type);
-        if ([pocker1Type, pocker2Type].includes(PockerCombinationTypeEnum.AAA) && [pocker1Type, pocker2Type].includes(PockerCombinationTypeEnum.TWO_THREE_FIVE)) {
+        if (
+            [pocker1Type, pocker2Type].includes(PockerCombinationTypeEnum.AAA) &&
+            [pocker1Type, pocker2Type].includes(PockerCombinationTypeEnum.TWO_THREE_FIVE)
+        ) {
             if (pocker1Type === PockerCombinationTypeEnum.TWO_THREE_FIVE) {
                 return 0; // 'pocker1 - 大';
             } else {

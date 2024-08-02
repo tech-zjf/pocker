@@ -21,8 +21,16 @@ const Home: React.FC = () => {
     };
 
     const testPosckerSize = () => {
-        const p1 = [createPocker(PockerEnum.TEN, PockersTypeEnum.HEI_TAO), createPocker(PockerEnum.SIX, PockersTypeEnum.HEI_TAO), createPocker(PockerEnum.FIVE, PockersTypeEnum.HEI_TAO)];
-        const p2 = [createPocker(PockerEnum.TEN, PockersTypeEnum.HONG_TAO), createPocker(PockerEnum.SIX, PockersTypeEnum.HONG_TAO), createPocker(PockerEnum.FIVE, PockersTypeEnum.HONG_TAO)];
+        const p1 = [
+            createPocker(PockerEnum.TEN, PockersTypeEnum.HEI_TAO),
+            createPocker(PockerEnum.SIX, PockersTypeEnum.HEI_TAO),
+            createPocker(PockerEnum.FIVE, PockersTypeEnum.HEI_TAO)
+        ];
+        const p2 = [
+            createPocker(PockerEnum.TEN, PockersTypeEnum.HONG_TAO),
+            createPocker(PockerEnum.SIX, PockersTypeEnum.HONG_TAO),
+            createPocker(PockerEnum.FIVE, PockersTypeEnum.HONG_TAO)
+        ];
         console.log('卡牌', p1, p2);
         const result = compare(p1, p2);
         console.log(result);

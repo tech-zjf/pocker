@@ -8,6 +8,7 @@ import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
 import { message } from 'antd';
 import { PlayerRoomStatusEnum, RoomInfoResponse, RoomPlayerResponse, RoomResponse, RoomStateEnum } from './interface';
+import RoomContext from './context';
 
 const Home: React.FC = () => {
     const { socket } = useSocket();
@@ -61,14 +62,18 @@ const Home: React.FC = () => {
 
     /** 退出房间 */
     const onLeaveRoom = () => {
-        socket.emit(EventPushEnum.ON_LEAVE_ROOM, { roomNo: roomNo, userId: useInfo.userId }, (res: ApiResponse<unknown>) => {
-            if (res.code === ApiCode.SUCCESS) {
-                message.success('退出成功！');
-                navigate('/');
-                return;
+        socket.emit(
+            EventPushEnum.ON_LEAVE_ROOM,
+            { roomNo: roomNo, userId: useInfo.userId },
+            (res: ApiResponse<unknown>) => {
+                if (res.code === ApiCode.SUCCESS) {
+                    message.success('退出成功！');
+                    navigate('/');
+                    return;
+                }
+                message.error(res.msg);
             }
-            message.error(res.msg);
-        });
+        );
     };
 
     /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
@@ -76,12 +81,18 @@ const Home: React.FC = () => {
         if (!roomInfo || !players) {
             return false;
         }
-        return roomInfo?.roomState == RoomStateEnum.WAIT_JOIN && players?.every((p) => p?.playerGames?.roomStatus !== PlayerRoomStatusEnum.GAMEING);
+        return (
+            roomInfo?.roomState == RoomStateEnum.WAIT_JOIN &&
+            players?.every((p) => p?.playerGames?.roomStatus !== PlayerRoomStatusEnum.GAMEING)
+        );
     }, [roomInfo, players]);
 
     /** 获取房间信息 */
     const fetchRoomInfo = async () => {
-        socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, { roomNo: roomNo, userId: useInfo.userId });
+        socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, {
+            roomNo: roomNo,
+            userId: useInfo.userId
+        });
     };
 
     useEffect(() => {
@@ -120,12 +131,26 @@ const Home: React.FC = () => {
     }, [showLoading]);
 
     return (
-        <div className="h-full ">
-            <PockerDesktop onStatusChange={onStatusChange} />
-            {roomInfo && <p>{showLoading}</p>}
-            {/* 未开始游戏，准备中状态展示以下蒙层 */}
-            {showLoading && roomInfo && <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />}
-        </div>
+        <RoomContext.Provider
+            value={{
+                roomNo,
+                roomInfo,
+                players,
+                onStatusChange,
+                onStartGame,
+                onLeaveRoom,
+                fetchRoomInfo,
+                fetchRoomPlayers
+            }}
+        >
+            <div className="h-full ">
+                <PockerDesktop onStatusChange={onStatusChange} />
+                {/* 未开始游戏，准备中状态展示以下蒙层 */}
+                {showLoading && roomInfo && (
+                    <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />
+                )}
+            </div>
+        </RoomContext.Provider>
     );
 };
 export default Home;

@@ -41,8 +41,24 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
     };
 
     return (
-        <Modal destroyOnClose title="创建房间" width={600} open={open} okText="确定" cancelText="取消" onOk={createRoom} onCancel={_onCancel}>
-            <Form form={form} name="basic" layout="vertical" initialValues={{ maxPlayers: 3 }} autoComplete="off" className=" mt-6">
+        <Modal
+            destroyOnClose
+            title="创建房间"
+            width={600}
+            open={open}
+            okText="确定"
+            cancelText="取消"
+            onOk={createRoom}
+            onCancel={_onCancel}
+        >
+            <Form
+                form={form}
+                name="basic"
+                layout="vertical"
+                initialValues={{ maxPlayers: 3 }}
+                autoComplete="off"
+                className=" mt-6"
+            >
                 <Form.Item
                     label="房间名"
                     name="name"
