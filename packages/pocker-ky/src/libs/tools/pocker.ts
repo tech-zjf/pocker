@@ -67,9 +67,11 @@ function computePockerType(pockers: Pocker[]): PockerCombinationTypeEnum {
 
 /** 比较相同类型的牌  */
 function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[], type: PockerCombinationTypeEnum) {
+    // 按照牌的大小降序排列
     const sortPockers1 = pockers1.sort((a, b) => b.weight - a.weight);
     const sortPockers2 = pockers2.sort((a, b) => b.weight - a.weight);
     let i;
+    // 依次比较没一张牌
     for (i = 0; i < 3; i++) {
         const p1 = sortPockers1[i];
         const p2 = sortPockers2[i];
@@ -80,6 +82,7 @@ function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[], type: Po
             return 1;
         }
     }
+    // 循环结束 说明牌一样 那么开牌谁输
     return '谁开牌谁输！'; // 不比花色 牌相同，谁开牌谁输
     if (i === 3 && [PockerCombinationTypeEnum.STRAIGHT_FLUSH, PockerCombinationTypeEnum.FLUSH].includes(type)) {
         return sortPockers1[0].type > sortPockers2[1].type ? 0 : 1;
@@ -90,12 +93,16 @@ function compareSameTypePockers(pockers1: Pocker[], pockers2: Pocker[], type: Po
 
 /** 比大小 */
 export function compare(pockers1: Pocker[], pockers2: Pocker[]) {
+    // 获取 卡牌1的类型
     const pocker1Type = computePockerType(pockers1);
+    // 获取 卡牌2的类型
     const pocker2Type = computePockerType(pockers2);
     console.log('卡牌类型：', pocker1Type, pocker2Type);
+    // 类型一样
     if (pocker1Type === pocker2Type) {
         return compareSameTypePockers(pockers1, pockers2, pocker1Type);
     } else {
+        // 类型不一样 拿到牌类型对应在按大小排序的队列中的下标， 下标越大牌越大，但有一个特殊情况就是235 > AAA 所以以下特殊判断了下
         const pocker1Index = findCombinationRank(pocker1Type);
         const pocker2Index = findCombinationRank(pocker2Type);
         if (

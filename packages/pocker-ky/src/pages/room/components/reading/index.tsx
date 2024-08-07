@@ -20,7 +20,7 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
     return (
         <div className="fixed bg-white w-full h-full overflow-hidden top-0 left-0 flex items-center justify-center">
             <div className=" flex flex-col " style={{ width: 800 }}>
-                <div className=" text-base font-semibold text-zjf-bright-blue mb-40 flex flex-col justify-center items-center">
+                <div className=" text-base font-semibold text-zjf-bright-blue mb-40 flex flex-col justify-center items-center ">
                     <Spin />
                     <p className="mt-3">等待其他玩家加入...</p>
                 </div>
@@ -38,7 +38,12 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                                     <div className="flex items-center">
                                         <Avatar size={40} src={pItem?.player?.avatar} />
                                         <h4 className=" text-sm text-gray-900 font-semibold ml-3 flex items-center">
-                                            {pItem?.player?.username} {roomInfo?.createId === pItem?.player?.userId && <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white ml-4">房主</span>}
+                                            {pItem?.player?.username}
+                                            {roomInfo?.createId === pItem?.player?.userId && (
+                                                <span className=" py-1 px-2 bg-zjf-yellow rounded-sm text-xs text-white ml-4">
+                                                    房主
+                                                </span>
+                                            )}
                                         </h4>
                                     </div>
                                     <div className="flex items-center">

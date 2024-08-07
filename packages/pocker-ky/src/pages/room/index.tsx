@@ -17,7 +17,6 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
     const [roomInfo, setRoomInfo] = useState<RoomInfoResponse | null>(null);
     const [players, setPlayers] = useState<RoomPlayerResponse[]>([]);
-    const [currentRoomPlayers, setCurrentRoomPlayers] = useState([]);
 
     const onStatusChange = (status: string) => {
         if (status === '退出') {

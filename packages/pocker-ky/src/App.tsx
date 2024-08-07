@@ -60,7 +60,10 @@ const App: React.FC = () => {
                             <Avatar src={playerInfo?.avatar} size="large" />
                             {showMenu && (
                                 <div className="absolute top-12 right-0 max-h-40 w-32 p-3 box-border overflow-y-auto rounded shadow-md bg-white z-50">
-                                    <div className=" text-base text-gray-900 text-center flex  items-center  justify-center" onClick={logout}>
+                                    <div
+                                        className=" text-base text-gray-900 text-center flex  items-center  justify-center"
+                                        onClick={logout}
+                                    >
                                         <PoweroffOutlined className="mr-2" />
                                         <span>退出登录</span>
                                     </div>
