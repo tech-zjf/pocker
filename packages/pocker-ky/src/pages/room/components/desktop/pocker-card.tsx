@@ -41,12 +41,13 @@ const createPockers = (items: Player['pockers'], isMine: boolean, status: string
 
 const PockerCard: React.FC<PockerCardProps> = (props) => {
     const { items, isMine, status } = props;
-    const Pockers = createPockers(items, isMine, status);
+    const pockers = createPockers(items, isMine, status);
+
     return (
         <div className="flex item-center justify-center mt-3">
             <Space size={10}>
-                {Pockers.map((PockerItem, index) => {
-                    return <Fragment key={index}>{PockerItem}</Fragment>;
+                {pockers.map((pockerItem, index) => {
+                    return <Fragment key={index}>{pockerItem}</Fragment>;
                 })}
             </Space>
         </div>
