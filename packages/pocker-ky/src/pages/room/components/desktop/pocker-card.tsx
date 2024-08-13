@@ -11,8 +11,10 @@ interface PockerCardProps extends BasicComponentProps {
     status: string;
 }
 
-const createPockers = (items: Player['pockers'], isMine: boolean, status: string) => {
+const createPockers = (props: PockerCardProps) => {
+    const { items, status } = props;
     let pokersComList: JSX.Element[] = [];
+
     if (status === '看牌' || status === '弃牌') {
         const poker = items.map((pt) => {
             return (
@@ -36,12 +38,12 @@ const createPockers = (items: Player['pockers'], isMine: boolean, status: string
         });
         pokersComList.push(...poker);
     }
+
     return pokersComList;
 };
 
 const PockerCard: React.FC<PockerCardProps> = (props) => {
-    const { items, isMine, status } = props;
-    const pockers = createPockers(items, isMine, status);
+    const pockers = createPockers(props);
 
     return (
         <div className="flex item-center justify-center mt-3">
