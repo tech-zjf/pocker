@@ -32,7 +32,6 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                                 onSpeaker('弃牌');
                                 onStatusChange?.('退出');
                             }}
-                            onOpenChange={() => console.log('open change')}
                         >
                             <Button>退出房间</Button>
                         </Popconfirm>
