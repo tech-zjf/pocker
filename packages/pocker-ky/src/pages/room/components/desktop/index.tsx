@@ -24,6 +24,10 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
         return players?.find((pItem) => pItem.player.userId == userInfo.userId);
     }, [players]);
 
+    const isMineSpeaker = useMemo(() => {
+        return roomInfo?.speaker === userInfo.userId;
+    }, [roomInfo]);
+
     return (
         <div className="h-full flex flex-col bg-gray-100 overflow-hidden">
             <div className="flex justify-around">
@@ -37,7 +41,7 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
                 </div>
             </div>
             <div className=" mx-auto" style={{ width: 800 }}>
-                <DesktopMine item={mineInfo!} />
+                <DesktopMine item={mineInfo!} isMineSpeaker={isMineSpeaker} />
             </div>
         </div>
     );

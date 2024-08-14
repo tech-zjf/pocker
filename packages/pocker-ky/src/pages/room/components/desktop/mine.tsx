@@ -1,5 +1,5 @@
 import { BasicComponentProps } from '@/components/interface';
-import { Button, Space } from 'antd';
+import { Button, Popconfirm, Space } from 'antd';
 import PockerCard from './pocker-card';
 import { Player } from '@/api/modules/user/interface';
 import { PlayerGameStatusEnum, playerGameStatusMap, RoomPlayerResponse } from '../../interface';
@@ -9,31 +9,58 @@ import { SoundOutlined } from '@ant-design/icons';
 
 interface DesktopMineProps extends BasicComponentProps {
     item: RoomPlayerResponse;
+    isMineSpeaker: boolean;
 }
 
 const DesktopMine: React.FC<DesktopMineProps> = (props) => {
-    const { item } = props;
+    const { item, isMineSpeaker } = props;
     const { onStatusChange, roomInfo } = useContext(RoomContext);
+
     return (
         <div className="h-full p-5 custom-shadow flex  flex-col bg-white relative">
             <div className="desktop-mine-head relative">
-                {item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER && (
-                    <div className=" flex items-center justify-center">
-                        <Space size={50}>
-                            <Button
-                                onClick={() => {
-                                    onStatusChange?.('退出');
-                                }}
-                            >
-                                退出房间
-                            </Button>
-                            <Button type="primary">跟</Button>
-                            <Button type="primary">看牌</Button>
-                            <Button type="primary">弃牌</Button>
-                            <Button type="primary">开牌</Button>
-                        </Space>
-                    </div>
-                )}
+                <div className=" flex items-center justify-center">
+                    <Space size={50}>
+                        <Popconfirm
+                            title="退出房间"
+                            description="游戏中退出房间则视为弃牌，确定退出吗？"
+                            onConfirm={() => {
+                                // todo 调用弃牌
+                                onStatusChange?.('退出');
+                            }}
+                            onOpenChange={() => console.log('open change')}
+                        >
+                            <Button>退出房间</Button>
+                        </Popconfirm>
+                        <Button
+                            type="primary"
+                            disabled={
+                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
+                            }
+                        >
+                            跟
+                        </Button>
+                        <Button
+                            type="primary"
+                            disabled={
+                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
+                            }
+                        >
+                            看牌
+                        </Button>
+                        <Button type="primary" disabled={isMineSpeaker}>
+                            弃牌
+                        </Button>
+                        <Button
+                            type="primary"
+                            disabled={
+                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
+                            }
+                        >
+                            开牌
+                        </Button>
+                    </Space>
+                </div>
             </div>
             <div className=" flex items-center justify-center mt-6">
                 <p className=" text-zjf-new-cyan">
