@@ -5,13 +5,13 @@ import FANG_KUAI_IMG from '@/assets/images/fang-kuai.png';
 
 export enum PockersTypeEnum {
     /** 红桃 */
-    HONG_TAO = 4,
+    HONG_TAO = 3,
     /** 黑桃 */
-    HEI_TAO = 3,
+    HEI_TAO = 2,
     /** 梅花 */
-    MEI_HUA = 2,
+    MEI_HUA = 1,
     /** 方块 */
-    FANG_KUAI = 1
+    FANG_KUAI = 0
 }
 
 export const PockerCardCenterImageMap = new Map([
@@ -19,6 +19,22 @@ export const PockerCardCenterImageMap = new Map([
     [PockersTypeEnum.HEI_TAO, HEI_TAO_IMG],
     [PockersTypeEnum.MEI_HUA, MEI_HUA_IMG],
     [PockersTypeEnum.FANG_KUAI, FANG_KUAI_IMG]
+]);
+
+export const pockerMap = new Map([
+    [2, '2'],
+    [3, '3'],
+    [4, '4'],
+    [5, '5'],
+    [6, '6'],
+    [7, '7'],
+    [8, '8'],
+    [9, '9'],
+    [10, '10'],
+    [11, 'J'],
+    [12, 'Q'],
+    [13, 'K'],
+    [14, 'A']
 ]);
 
 export enum PockerEnum {

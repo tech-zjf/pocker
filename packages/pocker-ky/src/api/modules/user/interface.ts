@@ -2,7 +2,7 @@ import { Pocker } from '@/constants/pocker';
 
 export interface AuthorDetailResponse {
     nickname: string;
-    userId: number;
+    userId: string;
     avatar: string;
     roles: string[];
     username: string;

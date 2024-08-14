@@ -2,113 +2,42 @@ import { Player } from '@/api/modules/user/interface';
 import DesktopMine from './mine';
 import DesktopOtherPlayerItem from './other-player-item';
 import { PockerEnum } from '@/constants/pocker';
+import { useContext, useMemo } from 'react';
+import RoomContext from '../../context';
+import { getUserInfo } from '@/libs/storage';
+import logo from '@/assets/images/pocker-logo.webp';
 
-const mock: Player[] = [
-    {
-        id: 1,
-        name: 'Throne丶殇影',
-        isMine: true,
-        pockers: [
-            {
-                type: 1,
-                value: PockerEnum.A,
-                weight: 1
-            },
-            { type: 1, value: PockerEnum.TWO, weight: 1 },
-            { type: 4, value: PockerEnum.THREE, weight: 1 }
-        ],
-        isSpeech: true,
-        status: '看牌',
-        betting: 66
-    },
-    {
-        id: 2,
-        name: '希望之星over',
-        isMine: false,
-        pockers: [
-            {
-                type: 1,
-                value: PockerEnum.A,
-                weight: 1
-            },
-            { type: 1, value: PockerEnum.TWO, weight: 1 },
-            { type: 4, value: PockerEnum.THREE, weight: 1 }
-        ],
-        isSpeech: false,
-        status: '未看牌',
-        betting: 20
-    },
-    {
-        id: 3,
-        name: 'LC畅玩',
-        isMine: false,
-        pockers: [
-            {
-                type: 1,
-                value: PockerEnum.A,
-                weight: 1
-            },
-            { type: 1, value: PockerEnum.TWO, weight: 1 },
-            { type: 4, value: PockerEnum.THREE, weight: 1 }
-        ],
-        isSpeech: false,
-        status: '未看牌',
-        betting: 20
-    },
-    {
-        id: 4,
-        name: 'Throne丶殇夜',
-        isMine: false,
-        pockers: [
-            {
-                type: 1,
-                value: PockerEnum.A,
-                weight: 1
-            },
-            { type: 1, value: PockerEnum.TWO, weight: 1 },
-            { type: 4, value: PockerEnum.THREE, weight: 1 }
-        ],
-        isSpeech: false,
-        status: '弃牌',
-        betting: 20
-    },
-    {
-        id: 5,
-        name: '我是怪人',
-        isMine: false,
-        pockers: [
-            {
-                type: 1,
-                value: PockerEnum.A,
-                weight: 1
-            },
-            { type: 1, value: PockerEnum.TWO, weight: 1 },
-            { type: 4, value: PockerEnum.THREE, weight: 1 }
-        ],
-        isSpeech: false,
-        status: '弃牌',
-        betting: 20
-    }
-];
+interface PockerDesktopProps {}
 
-interface PockerDesktopProps {
-    onStatusChange: (s: string) => void;
-}
+const PockerDesktop: React.FC<PockerDesktopProps> = () => {
+    const { roomNo, roomInfo, players, onStatusChange } = useContext(RoomContext);
+    const userInfo = getUserInfo();
+    console.log('roomInfo, players', roomInfo, players);
 
-const PockerDesktop: React.FC<PockerDesktopProps> = (props) => {
-    const { onStatusChange } = props;
-    const otherPlayers = mock.slice(1, 5);
-    const mine = mock[0];
+    /** 其他玩家 */
+    const otherPlayers = useMemo(() => {
+        return players?.filter((pItem) => pItem.player.userId != userInfo.userId);
+    }, [players]);
+
+    /** 自己 */
+    const mineInfo = useMemo(() => {
+        return players?.find((pItem) => pItem.player.userId == userInfo.userId);
+    }, [players]);
+
     return (
-        <div className="h-full flex  flex-col ">
-            <div className={`flex-1 grid  grid-cols-4 gap-x-5`}>
-                {otherPlayers.map((item) => {
-                    return <DesktopOtherPlayerItem key={item.id} item={item} />;
+        <div className="h-full flex flex-col bg-gray-100 overflow-hidden">
+            <div className="flex justify-around">
+                {otherPlayers?.map((otherPlayerItem) => {
+                    return <DesktopOtherPlayerItem key={otherPlayerItem.player.userId} item={otherPlayerItem} />;
                 })}
             </div>
-            <div className="flex-1">中间区域</div>
-            <div className="flex-1">
-                <DesktopMine onStatusChange={onStatusChange} item={mine} />
+            <div className="flex-1 border-2 border-zjf-darker-cyan">
+                <div className="w-full h-full flex items-center justify-center">
+                    <img className=" w-20 h-20" src={logo} />
+                </div>
+            </div>
+            <div className=" mx-auto" style={{ width: 800 }}>
+                <DesktopMine item={mineInfo!} />
             </div>
         </div>
     );

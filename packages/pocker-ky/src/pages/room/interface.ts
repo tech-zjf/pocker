@@ -24,6 +24,8 @@ export interface RoomInfoResponse {
     createId: string;
     /** 房间创建时间 */
     createTime: string;
+    /** 当前说话玩家 - userId */
+    speaker: string;
 }
 
 /** 玩家在当前房间的状态 */
@@ -58,7 +60,7 @@ export interface RoomPlayerResponse {
         cards: {
             number: number;
             flower: number;
-        };
+        }[];
     };
 }
 
@@ -66,3 +68,10 @@ export interface RoomResponse {
     gameRoom: RoomInfoResponse;
     players: RoomPlayerResponse[];
 }
+
+/** 玩家状态 */
+export const playerGameStatusMap = new Map([
+    [PlayerGameStatusEnum.DEAL_POCKER, '发牌'],
+    [PlayerGameStatusEnum.LOOK_POCKER, '看牌'],
+    [PlayerGameStatusEnum.DELETE_POCKER, '弃牌']
+]);

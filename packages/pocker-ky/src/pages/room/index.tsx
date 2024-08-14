@@ -15,7 +15,7 @@ const Home: React.FC = () => {
     const { roomNo } = useParams();
     const useInfo = getUserInfo();
     const navigate = useNavigate();
-    const [roomInfo, setRoomInfo] = useState<RoomInfoResponse | null>(null);
+    const [roomInfo, setRoomInfo] = useState<RoomInfoResponse>();
     const [players, setPlayers] = useState<RoomPlayerResponse[]>([]);
 
     const onStatusChange = (status: string) => {
@@ -143,7 +143,7 @@ const Home: React.FC = () => {
             }}
         >
             <div className="h-full ">
-                <PockerDesktop onStatusChange={onStatusChange} />
+                {roomInfo && !!players.length && <PockerDesktop />}
                 {/* 未开始游戏，准备中状态展示以下蒙层 */}
                 {showLoading && roomInfo && (
                     <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />

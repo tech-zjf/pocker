@@ -1,24 +1,33 @@
 import { BasicComponentProps } from '@/components/interface';
 import PockerCard from './pocker-card';
 import { Player } from '@/api/modules/user/interface';
+import { playerGameStatusMap, RoomPlayerResponse } from '../../interface';
+import { SoundOutlined } from '@ant-design/icons';
+import { useContext } from 'react';
+import RoomContext from '../../context';
 
 interface OtherPlayerItemProps extends BasicComponentProps {
-    item: Player;
+    item: RoomPlayerResponse;
 }
 
 const DesktopOtherPlayerItem: React.FC<OtherPlayerItemProps> = (props) => {
     const { item } = props;
+    const { roomInfo } = useContext(RoomContext);
+
     return (
-        <div className=" col-span-1 custom-shadow p-3 flex flex-col ">
-            <h2 className=" text-center">{item.name}</h2>
-            <div className="flex items-center justify-center mt-4">
-                <div>
-                    <p className=" text-zjf-new-cyan">{item.status}</p>
-                </div>
+        <div className=" bg-white custom-shadow px-10 py-5 flex flex-col relative ">
+            <h2 className=" text-center">{item.player.username}</h2>
+            <div className="flex items-center justify-center mt-6">
+                <p className=" text-zjf-new-cyan">
+                    {playerGameStatusMap.get(item.playerGames.gameStatus) || `未知 - ${item.playerGames.gameStatus}`}
+                </p>
             </div>
-            <div className=" flex-1 flex items-end justify-center">
-                <PockerCard items={item.pockers} isMine={false} status={item.status} />
+            <div className=" flex-1 flex items-end justify-center mt-6">
+                <PockerCard items={item.playerGames.cards} isMine={false} status={item.playerGames.gameStatus} />
             </div>
+            {roomInfo?.speaker == item.player.userId && (
+                <SoundOutlined className=" absolute right-2 top-2 text-zjf-green" />
+            )}
         </div>
     );
 };
