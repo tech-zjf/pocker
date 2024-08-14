@@ -8,6 +8,7 @@ import { getUserInfo } from '@/libs/storage';
 import logo from '@/assets/images/pocker-logo.webp';
 import { useCountDown } from 'ahooks';
 import { Button, Input, message } from 'antd';
+import tableBg from '@/assets/images/table.jpg';
 
 interface PockerDesktopProps {}
 
@@ -70,9 +71,13 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
                         <span className=" text-zjf-red font-semibold"> {Math.round(countdown / 1000)}</span>
                     </h4>
                 </div>
-                <div className="pocker-table h-full flex-1 flex items-center justify-center">
-                    <img className="w-20 h-20" src={logo} />
-                </div>
+                <div
+                    className="pocker-table h-full flex-1 flex items-center justify-center bg-no-repeat"
+                    style={{
+                        backgroundImage: `url(${tableBg})`,
+                        backgroundSize: '100% 100%'
+                    }}
+                ></div>
                 <div
                     style={{ width: 320 }}
                     className="pocker-room-chat h-full border-l-2 border-zjf-darker-cyan p-5 flex flex-col "
