@@ -129,6 +129,13 @@ const Home: React.FC = () => {
         };
     }, [showLoading]);
 
+    useEffect(() => {
+        if (roomInfo) {
+            const status = roomInfo.roomState === RoomStateEnum.WAIT_JOIN ? '等待玩家加入...' : '游戏中';
+            document.title = roomInfo.name + ' - ' + status;
+        }
+    }, [roomInfo]);
+
     return (
         <RoomContext.Provider
             value={{
