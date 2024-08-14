@@ -75,6 +75,37 @@ const Home: React.FC = () => {
         );
     };
 
+    const speaker = (speakerType: string, params?: Record<string, any>) => {
+        if (speakerType === '跟') {
+            // socket.emit(EventPushEnum.ON_LOOK_CARDS,(res: ApiResponse<unknown>)=>{
+            // })
+        }
+        if (speakerType === '看牌') {
+            socket.emit(EventPushEnum.ON_LOOK_CARDS, (res: ApiResponse<unknown>) => {
+                console.log('看牌-res', res);
+            });
+            return;
+        }
+        if (speakerType === '弃牌') {
+            socket.emit(EventPushEnum.ON_FOLD, (res: ApiResponse<unknown>) => {
+                console.log('弃牌-res', res);
+            });
+            return;
+        }
+        if (speakerType === '比牌') {
+            socket.emit(EventPushEnum.ON_COMPARE_CARDS, { ...params }, (res: ApiResponse<unknown>) => {
+                console.log('比牌-res', res);
+            });
+            return;
+        }
+        if (speakerType === '结束发言') {
+            socket.emit(EventPushEnum.ON_FINISH_SPEAK, (res: ApiResponse<unknown>) => {
+                console.log('结束发言-res', res);
+            });
+            return;
+        }
+    };
+
     /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
     const showLoading = useMemo(() => {
         if (!roomInfo || !players) {
@@ -146,7 +177,8 @@ const Home: React.FC = () => {
                 onStartGame,
                 onLeaveRoom,
                 fetchRoomInfo,
-                fetchRoomPlayers
+                fetchRoomPlayers,
+                speaker
             }}
         >
             <div className="h-full ">

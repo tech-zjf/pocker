@@ -38,7 +38,25 @@ export enum EventPushEnum {
     /**
      * 断开连接
      */
-    PLAYER_DISCONNECT = 'plaver-disconnect'
+    PLAYER_DISCONNECT = 'plaver-disconnect',
+    /**
+     * 结束发言
+     */
+    ON_FINISH_SPEAK = 'finish-speak',
+    /**
+     * 看牌
+     */
+
+    ON_LOOK_CARDS = 'look-cards',
+    /**
+     * 弃牌
+     */
+
+    ON_FOLD = 'fold',
+    /**
+     * 比牌
+     */
+    ON_COMPARE_CARDS = 'compare-cards'
 }
 
 export enum EventListenerEnum {

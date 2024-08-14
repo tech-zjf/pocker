@@ -14,7 +14,11 @@ interface DesktopMineProps extends BasicComponentProps {
 
 const DesktopMine: React.FC<DesktopMineProps> = (props) => {
     const { item, isMineSpeaker } = props;
-    const { onStatusChange, roomInfo } = useContext(RoomContext);
+    const { onStatusChange, roomInfo, speaker } = useContext(RoomContext);
+
+    const onSpeaker = (type: string, params?: Record<string, any>) => {
+        speaker?.(type, params);
+    };
 
     return (
         <div className="h-full p-5 custom-shadow flex  flex-col bg-white relative">
@@ -37,6 +41,9 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             disabled={
                                 isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
                             }
+                            onClick={() => {
+                                onSpeaker('跟');
+                            }}
                         >
                             跟
                         </Button>
@@ -45,10 +52,19 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             disabled={
                                 isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
                             }
+                            onClick={() => {
+                                onSpeaker('看牌');
+                            }}
                         >
                             看牌
                         </Button>
-                        <Button type="primary" disabled={isMineSpeaker}>
+                        <Button
+                            type="primary"
+                            disabled={isMineSpeaker}
+                            onClick={() => {
+                                onSpeaker('弃牌');
+                            }}
+                        >
                             弃牌
                         </Button>
                         <Button
@@ -56,8 +72,22 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             disabled={
                                 isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
                             }
+                            onClick={() => {
+                                onSpeaker('比牌');
+                            }}
                         >
-                            开牌
+                            比牌
+                        </Button>
+                        <Button
+                            type="primary"
+                            disabled={
+                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
+                            }
+                            onClick={() => {
+                                onSpeaker('结束发言');
+                            }}
+                        >
+                            结束发言
                         </Button>
                     </Space>
                 </div>
