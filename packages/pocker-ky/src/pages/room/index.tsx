@@ -152,9 +152,7 @@ const Home: React.FC = () => {
             <div className="h-full ">
                 {roomInfo && !!players?.length && <PockerDesktop />}
                 {/* 未开始游戏，准备中状态展示以下蒙层 */}
-                {showLoading && roomInfo && (
-                    <RoomReadingMask roomInfo={roomInfo} players={players} onStatusChange={onStatusChange} />
-                )}
+                {showLoading && roomInfo && <RoomReadingMask />}
             </div>
         </RoomContext.Provider>
     );

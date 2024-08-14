@@ -1,20 +1,17 @@
 import { getUserInfo } from '@/libs/storage';
 import { Avatar, Button, Space, Spin } from 'antd';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { RoomInfoResponse, RoomPlayerResponse } from '../../interface';
+import RoomContext from '../../context';
 
-export interface RoomReadingMaskProps {
-    roomInfo: RoomInfoResponse;
-    players: RoomPlayerResponse[];
-    onStatusChange: (s: string) => void;
-}
+export interface RoomReadingMaskProps {}
 
-const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
-    const { onStatusChange, roomInfo, players } = props;
+const RoomReadingMask: React.FC<RoomReadingMaskProps> = () => {
+    const { onStatusChange, roomInfo, players } = useContext(RoomContext);
     const playerInfo = getUserInfo();
 
     const isMaster = useMemo(() => {
-        return roomInfo.createId === playerInfo?.userId.toString();
+        return roomInfo?.createId === playerInfo?.userId.toString();
     }, [roomInfo, playerInfo]);
 
     return (
@@ -32,7 +29,7 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                         </span>
                     </div>
                     <div>
-                        {players.map((pItem: any, index: number) => {
+                        {players?.map((pItem: any, index: number) => {
                             return (
                                 <div className="flex items-center justify-between mt-4" key={index}>
                                     <div className="flex items-center">
@@ -58,7 +55,7 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                     <Button
                         type="default"
                         onClick={() => {
-                            onStatusChange('退出');
+                            onStatusChange?.('退出');
                         }}
                     >
                         退出房间
@@ -69,7 +66,7 @@ const RoomReadingMask: React.FC<RoomReadingMaskProps> = (props) => {
                             type="primary"
                             onClick={() => {
                                 console.log('isMaster', isMaster);
-                                onStatusChange('开始游戏');
+                                onStatusChange?.('开始游戏');
                             }}
                         >
                             开始游戏
