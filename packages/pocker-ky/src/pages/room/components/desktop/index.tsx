@@ -10,9 +10,8 @@ import logo from '@/assets/images/pocker-logo.webp';
 interface PockerDesktopProps {}
 
 const PockerDesktop: React.FC<PockerDesktopProps> = () => {
-    const { roomNo, roomInfo, players, onStatusChange } = useContext(RoomContext);
+    const { roomInfo, players } = useContext(RoomContext);
     const userInfo = getUserInfo();
-    console.log('roomInfo, players', roomInfo, players);
 
     /** 其他玩家 */
     const otherPlayers = useMemo(() => {
