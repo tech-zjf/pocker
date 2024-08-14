@@ -17,6 +17,7 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
     const [roomInfo, setRoomInfo] = useState<RoomInfoResponse>();
     const [players, setPlayers] = useState<RoomPlayerResponse[]>([]);
+    const [showLoading, setShowLoading] = useState(false);
 
     const onStatusChange = (status: string) => {
         if (status === '退出') {
@@ -52,6 +53,7 @@ const Home: React.FC = () => {
 
     /** 通知服务端推送 - 玩家信息 */
     const fetchRoomPlayers = () => {
+        console.log('通知了！！！');
         socket.emit(EventPushEnum.ON_GAME_ROOM_PLAYERS, { roomNo: roomNo }, (res: ApiResponse<unknown>) => {
             if (res.code !== ApiCode.SUCCESS) {
                 message.error(res.msg);
@@ -106,17 +108,6 @@ const Home: React.FC = () => {
         }
     };
 
-    /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
-    const showLoading = useMemo(() => {
-        if (!roomInfo || !players) {
-            return false;
-        }
-        return (
-            roomInfo?.roomState == RoomStateEnum.WAIT_JOIN &&
-            players?.every((p) => p?.playerGames?.roomStatus !== PlayerRoomStatusEnum.GAMEING)
-        );
-    }, [roomInfo, players]);
-
     /** 获取房间信息 */
     const fetchRoomInfo = async () => {
         socket.emit(EventPushEnum.ON_GAME_ROOM_INFO, {
@@ -126,6 +117,7 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
+        console.log('showLoading', showLoading);
         if (showLoading) {
             fetchRoomInfo();
         } else {
@@ -159,6 +151,17 @@ const Home: React.FC = () => {
             socket.off(EventListenerEnum.PUSH_ROOM_PLAYER, updateRoomPlayers);
         };
     }, [showLoading]);
+
+    /** 显示全屏loading - 房间状态为等待加入中 并且所有玩家的状态都不是游戏中的状态 */
+    useEffect(() => {
+        let loading =
+            roomInfo?.roomState == RoomStateEnum.WAIT_JOIN &&
+            players?.every((p) => p?.playerGames?.roomStatus !== PlayerRoomStatusEnum.GAMEING);
+        setShowLoading(loading);
+        return () => {
+            setShowLoading(false);
+        };
+    }, [roomInfo, players]);
 
     useEffect(() => {
         if (roomInfo) {
