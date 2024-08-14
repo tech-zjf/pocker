@@ -18,7 +18,7 @@ const createPockers = (props: PockerCardProps) => {
     const { items } = props;
     let pokersComList: JSX.Element[] = [];
 
-    if (items.length) {
+    if (items?.length) {
         const poker = items.map((pt) => {
             return (
                 <div style={{ width: 60, height: 90 }} className="relative rounded-lg bg-white shadow ">
