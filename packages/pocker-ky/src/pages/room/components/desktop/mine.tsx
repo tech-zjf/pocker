@@ -29,7 +29,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             title="退出房间"
                             description="游戏中退出房间则视为弃牌，确定退出吗？"
                             onConfirm={() => {
-                                // todo 调用弃牌
+                                onSpeaker('弃牌');
                                 onStatusChange?.('退出');
                             }}
                             onOpenChange={() => console.log('open change')}
@@ -38,9 +38,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         </Popconfirm>
                         <Button
                             type="primary"
-                            disabled={
-                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
-                            }
+                            disabled={!isMineSpeaker}
                             onClick={() => {
                                 onSpeaker('跟');
                             }}
@@ -49,9 +47,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         </Button>
                         <Button
                             type="primary"
-                            disabled={
-                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
-                            }
+                            disabled={!isMineSpeaker}
                             onClick={() => {
                                 onSpeaker('看牌');
                             }}
@@ -60,7 +56,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         </Button>
                         <Button
                             type="primary"
-                            disabled={isMineSpeaker}
+                            disabled={!isMineSpeaker}
                             onClick={() => {
                                 onSpeaker('弃牌');
                             }}
@@ -69,9 +65,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         </Button>
                         <Button
                             type="primary"
-                            disabled={
-                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
-                            }
+                            disabled={!isMineSpeaker}
                             onClick={() => {
                                 onSpeaker('比牌');
                             }}
@@ -80,9 +74,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         </Button>
                         <Button
                             type="primary"
-                            disabled={
-                                isMineSpeaker && item.playerGames.gameStatus !== PlayerGameStatusEnum.DELETE_POCKER
-                            }
+                            disabled={!isMineSpeaker}
                             onClick={() => {
                                 onSpeaker('结束发言');
                             }}
