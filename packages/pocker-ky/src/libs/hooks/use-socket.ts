@@ -56,7 +56,11 @@ export enum EventPushEnum {
     /**
      * 比牌
      */
-    ON_COMPARE_CARDS = 'compare-cards'
+    ON_COMPARE_CARDS = 'compare-cards',
+    /**
+     * 跟牌
+     */
+    ON_CALL = 'call'
 }
 
 export enum EventListenerEnum {
@@ -93,8 +97,8 @@ const useSocket = () => {
         socketInstance.connect();
 
         socketInstance.on('connect_error', (err: any) => {
-            const { data, message } = err;
-            console.log('connect_error：', message, data);
+            const { data, errMsg } = err;
+            console.log('connect_error：', errMsg, data);
             const code: ApiCode = data?.code;
             if (socket_connect_error_code.has(code)) {
                 message.error(socket_connect_error_code.get(code));
@@ -110,6 +114,9 @@ const useSocket = () => {
             const { code } = err;
             console.log('socket_error：', err);
             message.error(socket_connect_error_code.get(code));
+            if (code === ApiCode.TOKEN_INVALID) {
+                login();
+            }
         });
     }
     return {

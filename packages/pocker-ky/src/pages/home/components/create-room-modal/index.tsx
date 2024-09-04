@@ -55,7 +55,7 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
                 form={form}
                 name="basic"
                 layout="vertical"
-                initialValues={{ maxPlayers: 3 }}
+                initialValues={{ maxPlayers: 3, ante: 1 }}
                 autoComplete="off"
                 className=" mt-6"
             >
@@ -82,6 +82,18 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = (props) => {
                     ]}
                 >
                     <Input type="number" max={8} min={3} />
+                </Form.Item>
+                <Form.Item
+                    label="默认底注（兜儿）"
+                    name="ante"
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入默认底注（兜儿）!'
+                        }
+                    ]}
+                >
+                    <Input type="number" max={2} min={1} />
                 </Form.Item>
             </Form>
         </Modal>

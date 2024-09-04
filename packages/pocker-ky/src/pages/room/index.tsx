@@ -79,8 +79,7 @@ const Home: React.FC = () => {
 
     const speaker = (speakerType: string, params?: Record<string, any>) => {
         if (speakerType === '跟') {
-            // socket.emit(EventPushEnum.ON_LOOK_CARDS,(res: ApiResponse<unknown>)=>{
-            // })
+            socket.emit(EventPushEnum.ON_CALL, { ante: 1 }, (res: ApiResponse<unknown>) => {});
         }
         if (speakerType === '看牌') {
             socket.emit(EventPushEnum.ON_LOOK_CARDS, (res: ApiResponse<unknown>) => {

@@ -26,6 +26,14 @@ export interface RoomInfoResponse {
     createTime: string;
     /** 当前说话玩家 - userId */
     speaker: string;
+    /** 底注 */
+    ante: number;
+    /** 本轮累计赌注 */
+    roundAnte: number;
+    /** 本轮最大加注 */
+    maxRaise: number;
+    /** 当前轮次编号 */
+    roundNo: number;
 }
 
 /** 玩家在当前房间的状态 */
@@ -57,6 +65,8 @@ export interface RoomPlayerResponse {
     playerGames: {
         roomStatus: PlayerRoomStatusEnum;
         gameStatus: PlayerGameStatusEnum;
+        /** 当前轮次累计下注 */
+        bet: string;
         cards: {
             number: number;
             flower: number;

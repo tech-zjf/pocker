@@ -17,7 +17,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
     const { onStatusChange, roomInfo, speaker } = useContext(RoomContext);
 
     const onSpeaker = (type: string, params?: Record<string, any>) => {
-        speaker?.(type, params);
+        speaker?.(type, item, params);
     };
 
     return (
@@ -35,51 +35,65 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                         >
                             <Button>退出房间</Button>
                         </Popconfirm>
-                        <Button
-                            type="primary"
-                            disabled={!isMineSpeaker}
-                            onClick={() => {
-                                onSpeaker('跟');
-                            }}
-                        >
-                            跟
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!isMineSpeaker}
-                            onClick={() => {
-                                onSpeaker('看牌');
-                            }}
-                        >
-                            看牌
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!isMineSpeaker}
-                            onClick={() => {
-                                onSpeaker('弃牌');
-                            }}
-                        >
-                            弃牌
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!isMineSpeaker}
-                            onClick={() => {
-                                onSpeaker('比牌');
-                            }}
-                        >
-                            比牌
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!isMineSpeaker}
-                            onClick={() => {
-                                onSpeaker('结束发言');
-                            }}
-                        >
-                            结束发言
-                        </Button>
+                        {/* 非弃牌才展示跟注按钮 */}
+                        {item.playerGames.gameStatus != PlayerGameStatusEnum.DELETE_POCKER && (
+                            <Button
+                                type="primary"
+                                disabled={!isMineSpeaker}
+                                onClick={() => {
+                                    onSpeaker('跟');
+                                }}
+                            >
+                                跟
+                            </Button>
+                        )}
+                        {/* 发牌阶段才展示看牌 */}
+                        {item.playerGames.gameStatus == PlayerGameStatusEnum.DEAL_POCKER && (
+                            <Button
+                                type="primary"
+                                disabled={!isMineSpeaker}
+                                onClick={() => {
+                                    onSpeaker('看牌');
+                                }}
+                            >
+                                看牌
+                            </Button>
+                        )}
+                        {/* 发牌后才展示比牌 */}
+                        {item.playerGames.gameStatus == PlayerGameStatusEnum.LOOK_POCKER && (
+                            <Button
+                                type="primary"
+                                disabled={!isMineSpeaker}
+                                onClick={() => {
+                                    //TODO 选择跟谁比牌
+                                    onSpeaker('比牌');
+                                }}
+                            >
+                                比牌
+                            </Button>
+                        )}
+                        {item.playerGames.gameStatus != PlayerGameStatusEnum.DELETE_POCKER && (
+                            <Button
+                                type="primary"
+                                disabled={!isMineSpeaker}
+                                onClick={() => {
+                                    onSpeaker('结束发言');
+                                }}
+                            >
+                                结束发言
+                            </Button>
+                        )}
+                        {item.playerGames.gameStatus != PlayerGameStatusEnum.DELETE_POCKER && (
+                            <Button
+                                type="primary"
+                                disabled={!isMineSpeaker}
+                                onClick={() => {
+                                    onSpeaker('弃牌');
+                                }}
+                            >
+                                弃牌
+                            </Button>
+                        )}
                     </Space>
                 </div>
             </div>

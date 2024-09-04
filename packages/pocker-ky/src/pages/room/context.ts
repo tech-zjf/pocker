@@ -10,7 +10,7 @@ export interface RoomContextValue {
     onLeaveRoom?: () => void;
     fetchRoomInfo?: () => void;
     fetchRoomPlayers?: () => void;
-    speaker?: (type: string, params?: Record<string, any>) => void;
+    speaker?: (type: string, speakerPlayer: RoomPlayerResponse, params?: Record<string, any>) => void;
 }
 
 const RoomContext = createContext<RoomContextValue>({});

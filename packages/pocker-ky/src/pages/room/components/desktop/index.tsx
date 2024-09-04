@@ -9,6 +9,7 @@ import logo from '@/assets/images/pocker-logo.webp';
 import { useCountDown } from 'ahooks';
 import { Button, Input, message } from 'antd';
 import tableBg from '@/assets/images/table.jpg';
+import { RoomPlayerResponse } from '../../interface';
 
 interface PockerDesktopProps {}
 
@@ -22,7 +23,7 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
         onEnd: () => {
             // 倒计时解释视为弃牌
             if (isMineSpeaker) {
-                speaker?.('弃牌');
+                speaker?.('弃牌', mineInfo);
             }
         }
     });
@@ -34,7 +35,7 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
 
     /** 自己 */
     const mineInfo = useMemo(() => {
-        return players?.find((pItem) => pItem.player.userId == userInfo.userId);
+        return players?.find((pItem) => pItem.player.userId == userInfo.userId) as RoomPlayerResponse;
     }, [players]);
 
     /** 是否是自己说话 */
@@ -66,9 +67,21 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
             </div>
             <div className="flex-1 border-2 border-zjf-darker-cyan flex items-center">
                 <div style={{ width: 320 }} className="h-full border-r-2 border-zjf-darker-cyan p-5 flex flex-col ">
-                    <h4 className="mx-auto text-center">
-                        <span>{speakerPlayer?.player.username}</span> 说话倒计时中:
+                    <h4 className="flex justify-between ">
+                        <span>{speakerPlayer?.player.username} 说话倒计时中:</span>
                         <span className=" text-zjf-red font-semibold"> {Math.round(countdown / 1000)}</span>
+                    </h4>
+                    <h4 className="flex justify-between  mt-6">
+                        当前房间底注
+                        <span className=" text-zjf-red font-semibold"> {roomInfo?.ante}</span>
+                    </h4>
+                    <h4 className="flex justify-between  mt-6">
+                        本轮累计赌注
+                        <span className=" text-zjf-red font-semibold"> {roomInfo?.roundAnte}</span>
+                    </h4>
+                    <h4 className="flex justify-between  mt-6">
+                        本轮最大加注
+                        <span className=" text-zjf-red font-semibold"> {roomInfo?.maxRaise}</span>
                     </h4>
                 </div>
                 <div
