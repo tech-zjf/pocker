@@ -53,7 +53,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                 trigger="click"
             >
                 <Button type="primary" disabled={!isMineSpeaker}>
-                    押注 - <span className=" text-zjf-bright-blue">{isLookPocker ? '看' : '闷'}</span>
+                    押注<span className="ml-2">{isLookPocker ? '看' : '闷'}</span>
                 </Button>
             </Popover>
         );
