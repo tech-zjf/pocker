@@ -1,7 +1,6 @@
 import { BasicComponentProps } from '@/components/interface';
-import { Button, Popconfirm, Space } from 'antd';
+import { Button, Popconfirm, Popover, Space } from 'antd';
 import PockerCard from './pocker-card';
-import { Player } from '@/api/modules/user/interface';
 import { PlayerGameStatusEnum, playerGameStatusMap, RoomPlayerResponse } from '../../interface';
 import { useContext } from 'react';
 import RoomContext from '../../context';
@@ -20,6 +19,46 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
         speaker?.(type, item, params);
     };
 
+    const CallBtn = () => {
+        let callAnteList = [1, 2];
+        const isLookPocker = item.playerGames.gameStatus == PlayerGameStatusEnum.LOOK_POCKER;
+        const maxRaise = roomInfo?.maxRaise;
+
+        if (maxRaise === 1) {
+            callAnteList = isLookPocker ? [2] : [1, 2];
+        } else if (maxRaise === 2) {
+            callAnteList = isLookPocker ? [5] : [2];
+        }
+
+        return (
+            <Popover
+                content={
+                    <>
+                        {callAnteList.map((callAnte) => {
+                            return (
+                                <p
+                                    key={callAnte}
+                                    className=" flex items-center justify-center px-3 py-2"
+                                    onClick={() => {
+                                        onSpeaker('跟', { ante: callAnte });
+                                    }}
+                                >
+                                    <span>{callAnte}</span>
+                                </p>
+                            );
+                        })}
+                    </>
+                }
+                title="押注大小"
+                trigger="click"
+            >
+                <Button type="primary" disabled={!isMineSpeaker}>
+                    押注 - <span className=" text-zjf-bright-blue">{isLookPocker ? '看' : '闷'}</span>
+                </Button>
+            </Popover>
+        );
+    };
+
     return (
         <div className="h-full p-5 custom-shadow flex  flex-col bg-white relative">
             <div className="desktop-mine-head relative">
@@ -36,17 +75,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             <Button>退出房间</Button>
                         </Popconfirm>
                         {/* 非弃牌才展示跟注按钮 */}
-                        {item.playerGames.gameStatus != PlayerGameStatusEnum.DELETE_POCKER && (
-                            <Button
-                                type="primary"
-                                disabled={!isMineSpeaker}
-                                onClick={() => {
-                                    onSpeaker('跟');
-                                }}
-                            >
-                                跟
-                            </Button>
-                        )}
+                        {item.playerGames.gameStatus != PlayerGameStatusEnum.DELETE_POCKER && <CallBtn></CallBtn>}
                         {/* 发牌阶段才展示看牌 */}
                         {item.playerGames.gameStatus == PlayerGameStatusEnum.DEAL_POCKER && (
                             <Button

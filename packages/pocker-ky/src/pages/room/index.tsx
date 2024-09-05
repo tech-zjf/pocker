@@ -7,7 +7,14 @@ import { getUserInfo } from '@/libs/storage';
 import { ApiResponse } from '@/api/interface';
 import { ApiCode } from '@/api/constant';
 import { message } from 'antd';
-import { PlayerRoomStatusEnum, RoomInfoResponse, RoomPlayerResponse, RoomResponse, RoomStateEnum } from './interface';
+import {
+    PlayerGameStatusEnum,
+    PlayerRoomStatusEnum,
+    RoomInfoResponse,
+    RoomPlayerResponse,
+    RoomResponse,
+    RoomStateEnum
+} from './interface';
 import RoomContext from './context';
 
 const Home: React.FC = () => {
@@ -77,9 +84,13 @@ const Home: React.FC = () => {
         );
     };
 
-    const speaker = (speakerType: string, params?: Record<string, any>) => {
+    const speaker = (speakerType: string, speakerPlayer: RoomPlayerResponse, params?: Record<string, any>) => {
         if (speakerType === '跟') {
-            socket.emit(EventPushEnum.ON_CALL, { ante: 1 }, (res: ApiResponse<unknown>) => {});
+            if (!params?.ante) {
+                message.error('请选择押注数量！');
+                return;
+            }
+            socket.emit(EventPushEnum.ON_CALL, { ante: params.ante }, (res: ApiResponse<unknown>) => {});
         }
         if (speakerType === '看牌') {
             socket.emit(EventPushEnum.ON_LOOK_CARDS, (res: ApiResponse<unknown>) => {
