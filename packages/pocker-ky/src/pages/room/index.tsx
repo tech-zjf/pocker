@@ -125,6 +125,13 @@ const Home: React.FC = () => {
             socket.emit(EventPushEnum.ON_COMPARE_CARDS, { ...params }, (res: ApiResponse<unknown>) => {
                 console.log('比牌 - res', res);
                 if (res.code === ApiCode.SUCCESS) {
+                    socket.emit(EventPushEnum.ON_FINISH_SPEAK, (res: ApiResponse<unknown>) => {
+                        console.log('结束发言-res', res);
+                        if (res.code === ApiCode.SUCCESS) {
+                        } else {
+                            message.error(res.msg);
+                        }
+                    });
                 } else {
                     message.error(res.msg);
                 }
