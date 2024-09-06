@@ -161,9 +161,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                 </div>
             </div>
             <div className=" flex items-center justify-center mt-6">
-                <p className=" text-zjf-new-cyan">
-                    {playerGameStatusMap.get(item.playerGames.gameStatus) || `未知 - ${item.playerGames.gameStatus}`}
-                </p>
+                <p className=" text-zjf-new-cyan">{playerGameStatusMap.get(item.playerGames.gameStatus) || ''}</p>
             </div>
             <div className="flex-1 flex items-end justify-center mt-6">
                 <PockerCard items={item.playerGames.cards} isMine={true} status={item.playerGames.gameStatus} />

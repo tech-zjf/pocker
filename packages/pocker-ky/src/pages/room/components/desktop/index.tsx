@@ -22,9 +22,6 @@ const PockerDesktop: React.FC<PockerDesktopProps> = () => {
         leftTime: timer,
         onEnd: () => {
             // 倒计时解释视为弃牌
-            if (isMineSpeaker) {
-                speaker?.('弃牌', mineInfo);
-            }
         }
     });
 

@@ -123,6 +123,7 @@ const Home: React.FC = () => {
         }
         if (speakerType === '比牌') {
             socket.emit(EventPushEnum.ON_COMPARE_CARDS, { ...params }, (res: ApiResponse<unknown>) => {
+                console.log('比牌 - res', res);
                 if (res.code === ApiCode.SUCCESS) {
                 } else {
                     message.error(res.msg);

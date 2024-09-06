@@ -18,9 +18,7 @@ const DesktopOtherPlayerItem: React.FC<OtherPlayerItemProps> = (props) => {
         <div className=" bg-white custom-shadow px-10 py-5 flex flex-col relative ">
             <h2 className=" text-center">{item.player.username}</h2>
             <div className="flex items-center justify-center mt-6">
-                <p className=" text-zjf-new-cyan">
-                    {playerGameStatusMap.get(item.playerGames.gameStatus) || `未知 - ${item.playerGames.gameStatus}`}
-                </p>
+                <p className=" text-zjf-new-cyan">{playerGameStatusMap.get(item.playerGames.gameStatus) || ``}</p>
             </div>
             <div className=" flex-1 flex items-end justify-center mt-6">
                 <PockerCard items={item.playerGames.cards} isMine={false} status={item.playerGames.gameStatus} />

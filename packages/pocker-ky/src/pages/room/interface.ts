@@ -81,7 +81,6 @@ export interface RoomResponse {
 
 /** 玩家状态 */
 export const playerGameStatusMap = new Map([
-    [PlayerGameStatusEnum.DEAL_POCKER, '等待说话...'],
     [PlayerGameStatusEnum.LOOK_POCKER, '看牌'],
     [PlayerGameStatusEnum.DELETE_POCKER, '弃牌']
 ]);
