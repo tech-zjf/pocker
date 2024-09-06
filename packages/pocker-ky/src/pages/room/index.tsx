@@ -90,7 +90,13 @@ const Home: React.FC = () => {
                 message.error('请选择押注数量！');
                 return;
             }
-            socket.emit(EventPushEnum.ON_CALL, { ante: params.ante }, (res: ApiResponse<unknown>) => {});
+            socket.emit(EventPushEnum.ON_CALL, { ante: params.ante }, (res: ApiResponse<unknown>) => {
+                if (res.code === ApiCode.SUCCESS) {
+                    socket.emit(EventPushEnum.ON_FINISH_SPEAK, (res: ApiResponse<unknown>) => {
+                        console.log('结束发言-res', res);
+                    });
+                }
+            });
         }
         if (speakerType === '看牌') {
             socket.emit(EventPushEnum.ON_LOOK_CARDS, (res: ApiResponse<unknown>) => {
@@ -101,6 +107,11 @@ const Home: React.FC = () => {
         if (speakerType === '弃牌') {
             socket.emit(EventPushEnum.ON_FOLD, (res: ApiResponse<unknown>) => {
                 console.log('弃牌-res', res);
+                if (res.code === ApiCode.SUCCESS) {
+                    socket.emit(EventPushEnum.ON_FINISH_SPEAK, (res: ApiResponse<unknown>) => {
+                        console.log('结束发言-res', res);
+                    });
+                }
             });
             return;
         }

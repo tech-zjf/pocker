@@ -2,7 +2,7 @@ import { BasicComponentProps } from '@/components/interface';
 import { Button, Popconfirm, Popover, Space } from 'antd';
 import PockerCard from './pocker-card';
 import { PlayerGameStatusEnum, playerGameStatusMap, RoomPlayerResponse } from '../../interface';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import RoomContext from '../../context';
 import { SoundOutlined } from '@ant-design/icons';
 
@@ -19,7 +19,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
         speaker?.(type, item, params);
     };
 
-    const CallBtn = () => {
+    const CallBtn = useCallback(() => {
         let callAnteList = [1, 2];
         const isLookPocker = item.playerGames.gameStatus == PlayerGameStatusEnum.LOOK_POCKER;
         const maxRaise = roomInfo?.maxRaise;
@@ -38,7 +38,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                             return (
                                 <p
                                     key={callAnte}
-                                    className=" flex items-center justify-center px-3 py-2"
+                                    className=" flex items-center justify-center px-3 py-2 cursor-pointer text-zjf-bright-blue border border-gray-600 font-semibold rounded mb-4"
                                     onClick={() => {
                                         onSpeaker('跟', { ante: callAnte });
                                     }}
@@ -57,7 +57,7 @@ const DesktopMine: React.FC<DesktopMineProps> = (props) => {
                 </Button>
             </Popover>
         );
-    };
+    }, [roomInfo?.maxRaise, item.playerGames.gameStatus]);
 
     return (
         <div className="h-full p-5 custom-shadow flex  flex-col bg-white relative">
